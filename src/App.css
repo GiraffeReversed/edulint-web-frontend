@@ -8,12 +8,12 @@ html.dark body {
   background-color: #090909;
 }
 
-.navbar {
-  background-color: #bbbbbb;
+html.dark .navbar {
+  background-color: #3b3b3b !important;
 }
 
-html.dark .navbar {
-  background-color: #3b3b3b;
+.navbar {
+  background-color: #bbbbbb !important;
 }
 
 .content {

@@ -7,6 +7,8 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@uiw/codemirror-theme-github": "^4.19.7",
+    "@uiw/codemirror-theme-okaidia": "^4.19.7",
     "@uiw/react-codemirror": "^4.19.7",
     "bootstrap": "^5.2.3",
     "bootstrap-dark-5": "^1.1.3",

@@ -1,9 +1,13 @@
+import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { SunFill, MoonFill, GearFill } from "react-bootstrap-icons";
 import { Navbar as NB, Nav, Container } from "react-bootstrap";
+import { ModeContext, toggleDarkmode } from "./utils/Mode"
 
 export default function Navbar(props) {
-  let modeSymbol = <SunFill />
+  let [current, setMode] = React.useContext(ModeContext);
+  const modeSymbol = props.mode === "dark" ? <SunFill /> : <MoonFill />;
+
   return (
     <NB bg="light">
       <Container>
@@ -15,7 +19,7 @@ export default function Navbar(props) {
           <NavLink className="nav-link" to={`about`}>About</NavLink>
         </Nav>
         <Nav>
-          <Nav.Link onClick={() => console.log("foo")}>{modeSymbol}</Nav.Link>
+          <Nav.Link onClick={() => toggleDarkmode(current, setMode)}>{modeSymbol}</Nav.Link>
           <Nav.Link><GearFill /></Nav.Link>
         </Nav>
       </Container>

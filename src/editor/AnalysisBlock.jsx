@@ -8,38 +8,42 @@ import { InputGroup, Form, Button } from "react-bootstrap";
 import CtrlShortcut from "../utils/CtrlShortcut";
 import { SecondaryLink as A } from "../utils/SecondaryLink";
 
-// let EDITOR_LIGHT_THEME = "coda";
-// let EDITOR_DARK_THEME = "sunburst";
+import { okaidia } from "@uiw/codemirror-theme-okaidia";
+import { githubLight } from "@uiw/codemirror-theme-github";
+import { ModeContext } from "../utils/Mode";
 
-class CodeBlock extends React.Component {
-  render() {
-    return (
-      <div id="code-block" className="d-flex flex-column ms-3 me-2 mt-1 mb-2">
-        <div className="d-flex flex-row justify-content-between">
-          <h5>Code</h5>
-          <small id="keybind" hidden><CtrlShortcut letter="D" /> to mark current line as solved</small>
-        </div>
+let EDITOR_LIGHT_THEME = githubLight;
+let EDITOR_DARK_THEME = okaidia;
 
-        <CodeMirror
-          className="d-flex flex-fill"
-          value="print('hello world!');
-          print('goodbye world!')"
-          extensions={[python()]}
-        />
-
-        <InputGroup className="pt-3 pb-1">
-          <Form.Control type="file" accept=".py" />
-          <Button variant="secondary">Download</Button>
-          <Button>Check</Button>
-        </InputGroup>
-
-        <p className="text-muted small mb-0 text-center">Problems? Thoughts? Improvement suggestions? <A
-          href="https://docs.google.com/forms/d/e/1FAIpQLSfiQDmLX_KdOdoGJKC8qhNfYNG6O7sNiNk-x7as7H02DI7XhQ/viewform">
-          Let me know.</A>
-        </p>
+function CodeBlock() {
+  let [mode, _] = React.useContext(ModeContext);
+  return (
+    <div id="code-block" className="d-flex flex-column ms-3 me-2 mt-1 mb-2">
+      <div className="d-flex flex-row justify-content-between">
+        <h5>Code</h5>
+        <small id="keybind" hidden><CtrlShortcut letter="D" /> to mark current line as solved</small>
       </div>
-    );
-  }
+
+      <CodeMirror
+        className="d-flex flex-fill"
+        value="print('hello world!');
+          print('goodbye world!')"
+        theme={mode === "light" ? EDITOR_LIGHT_THEME : EDITOR_DARK_THEME}
+        extensions={[python()]}
+      />
+
+      <InputGroup className="pt-3 pb-1">
+        <Form.Control type="file" accept=".py" />
+        <Button variant="secondary">Download</Button>
+        <Button>Check</Button>
+      </InputGroup>
+
+      <p className="text-muted small mb-0 text-center">Problems? Thoughts? Improvement suggestions? <A
+        href="https://docs.google.com/forms/d/e/1FAIpQLSfiQDmLX_KdOdoGJKC8qhNfYNG6O7sNiNk-x7as7H02DI7XhQ/viewform">
+        Let me know.</A>
+      </p>
+    </div>
+  );
 }
 
 class ProblemsBlock extends React.Component {

@@ -1,38 +1,77 @@
-.App {
-  text-align: center;
+body {
+  background-color: #d1d1d1;
+  /* background-image: url("black-thread.png"); */
+  background-size: max(4%, 49px) auto;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html.dark body {
+  background-color: #090909;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.navbar {
+  background-color: #bbbbbb;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+html.dark .navbar {
+  background-color: #3b3b3b;
 }
 
-.App-link {
-  color: #61dafb;
+.content {
+  height: calc(100vh - 69px);
+  background-color: #ebebebd1;
+  overflow: hidden;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+html.dark .content {
+  background-color: #151515e6;
+}
+
+.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  margin-bottom: 1em;
+}
+
+.gutter.gutter-horizontal {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+  cursor: col-resize;
+}
+
+html.dark .gutter.gutter-horizontal {
+  filter: brightness(0.28);
+}
+
+.cm-editor {
+  font-size: 0.815rem !important;
+  flex-grow: 1;
+  border-radius: 0.3rem;
+}
+
+html.dark .CodeMirror {
+  background-color: #1f1f1f;
+}
+
+html.dark .CodeMirror-gutters {
+  background-color: #1f1f1f;
+}
+
+html.dark .CodeMirror-scrollbar-filler {
+  background-color: #1f1f1f;
+}
+
+#analysis-block {
+  overflow-y: hidden;
+}
+
+#problems-block {
+  overflow-y: auto;
+}
+
+.card-container {
+  overflow-y: auto;
+}
+
+.card-container .card:last-child {
+  margin-bottom: 0px !important;
 }

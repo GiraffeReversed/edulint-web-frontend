@@ -11,21 +11,20 @@ export default function Privacy() {
           <p>No one likes to read a privacy policy with the length of a novella, so we will keep it
             brief and to the point.</p>
 
-          <p>We process and store some of your data, namely:
+          <p>We process and store some of your data, namely:</p>
 
-            <ul>
-              <li>the submitted codes (their analysis is the core functionality; we also store them for academic
-                research and evaluation of new checks) </li>
-              <li>IP address (used to detect the number of visitors; estimate country; prevent attacks and abuse; not
-                stored)
-              </li>
-              <li>user agent (used to detect the number of visitors and types of devices; stored for a maximum of 180
-                days)
-              </li>
-              <li>from which website you came to EduLint</li>
-              <li>the sequence of actions you performed during your session</li>
-            </ul>
-          </p>
+          <ul>
+            <li>the submitted codes (their analysis is the core functionality; we also store them for academic
+              research and evaluation of new checks) </li>
+            <li>IP address (used to detect the number of visitors; estimate country; prevent attacks and abuse; not
+              stored)
+            </li>
+            <li>user agent (used to detect the number of visitors and types of devices; stored for a maximum of 180
+              days)
+            </li>
+            <li>from which website you came to EduLint</li>
+            <li>the sequence of actions you performed during your session</li>
+          </ul>
 
           <p>We will not provide your codes to third parties. We use them internally for evaluation
             of new checks. We may also create aggregate statistics (for example, most common errors) that will

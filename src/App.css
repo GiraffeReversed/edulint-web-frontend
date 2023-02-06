@@ -1,3 +1,18 @@
+html.light {
+  --toastify-color-info: var(--bs-primary);
+  --toastify-color-success: var(--bs-success);
+  --toastify-color-warning: var(--bs-warning);
+  --toastify-color-error: var(--bs-danger);
+}
+
+html.dark {
+  --toastify-color-info: var(--bs-primary-alt);
+  --toastify-color-success: var(--bs-success-alt);
+  --toastify-color-warning: var(--bs-warning-alt);
+  --toastify-color-error: var(--bs-danger-alt);
+  --toastify-color-dark: #3b3b3b;
+}
+
 body {
   background-color: #d1d1d1;
   /* background-image: url("black-thread.png"); */

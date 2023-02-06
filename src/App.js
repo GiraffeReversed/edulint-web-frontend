@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { Outlet, createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
 
 import Navbar from './Navbar';
 import { ModeContext, getMode, setModeToUI } from './utils/Mode';
@@ -14,33 +10,63 @@ import Teachers from './Teachers';
 import Privacy from './Privacy';
 
 import 'bootstrap-dark-5/dist/css/bootstrap-nightshade.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import { toast, ToastContainer } from 'react-toastify';
 
-function App() {
+// TODO handle errors
+const router = createBrowserRouter(
+  [
+    {
+      path: "/", element: <Body />,
+      children: [
+        { index: true, element: <AnalysisBlock /> },
+        {
+          path: "editor/:name?",
+          element: <AnalysisBlock />,
+          loader: async ({ params }) => {
+            if (!params.name)
+              return null;
+
+            const res = await fetch("https://edulint.rechtackova.cz/api/code/" + params.name);
+
+            if (res.status === 404) {
+              toast.info(<>No such file as <code>{params.name}</code> was uploaded.</>);
+              return redirect("/editor");
+            }
+            return res;
+          },
+        },
+        { path: "about", element: <About /> },
+        { path: "faq", element: <FAQ /> },
+        { path: "teachers", element: <Teachers /> },
+        { path: "privacy", element: <Privacy /> },
+      ]
+    }
+  ]
+);
+
+function Body() {
   let [mode, setMode] = React.useState(getMode());
   setModeToUI(mode);
-  let analysisBlock = <AnalysisBlock />;
 
-  // TODO handle errors
+  return (
+    <ModeContext.Provider value={[mode, setMode]} >
+      <ToastContainer position="bottom-right" theme={mode} />
+      <Navbar />
+      <div className="container-lg p-0 content d-flex flex-column rounded-bottom align-items-stretch pt-2">
+        <Outlet />
+      </div>
+    </ModeContext.Provider>
+  );
+}
+
+function App() {
   return (
     <React.StrictMode>
-      <BrowserRouter>
-        <ModeContext.Provider value={[mode, setMode]} >
-          <Navbar app={this} />
-          <div className="container-lg p-0 content d-flex flex-column rounded-bottom align-items-stretch pt-2">
-            <Routes>
-              <Route path="/" element={analysisBlock} />
-              <Route path="/editor" element={analysisBlock} />
-              <Route path="/about" element={<About />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/teachers" element={<Teachers />} />
-              <Route path="/privacy" element={<Privacy />} />
-            </Routes>
-          </div>
-        </ModeContext.Provider>
-      </BrowserRouter>
-    </React.StrictMode >
-  );
+      <RouterProvider router={router} />
+    </React.StrictMode>
+  )
 }
 
 export default App;

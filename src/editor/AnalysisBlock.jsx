@@ -1,6 +1,7 @@
 import React from "react";
 import Split from "react-split";
 import { toast } from "react-toastify";
+import DOMPurify from "dompurify";
 
 import ProblemsBlock from "./ProblemsBlock";
 
@@ -66,7 +67,15 @@ export function AnalysisBlock() {
         }
         return response.json();
       })
-      .then((data) => setExplanations(data));
+      .then((data) => {
+        let res = Object.fromEntries(
+          Object.entries(data).map(([k, v]) => [k, {
+            why: DOMPurify.sanitize(v.why),
+            examples: DOMPurify.sanitize(v.examples),
+          }])
+        );
+        setExplanations(res);
+      });
   }, []);
 
   return (

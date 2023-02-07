@@ -7,13 +7,52 @@ import ProblemsBlock from "./ProblemsBlock";
 
 import CtrlShortcut from "../utils/CtrlShortcut";
 
-import { Navigate, useLoaderData, useLocation } from "react-router-dom";
-import { Buttons, FeedbackInfo } from './AnalysisBlockElems';
+import { Navigate, useLoaderData, useLocation, useNavigate } from "react-router-dom";
+import { Buttons, FeedbackInfo, downloadFile, loadFile } from './AnalysisBlockElems';
 import CodeMirrorWrapper from './CodeBlock';
+
+function fetchData(url, toastContents, errorReturn, processResult) {
+  fetch(url)
+    .then(response => {
+      if (response.status !== 200) {
+        toast.error(toastContents);
+        return errorReturn;
+      }
+      return response.json();
+    }).then(processResult);
+}
+
+function fetchExplanations(setExplanations) {
+  fetchData(
+    "https://edulint.rechtackova.cz/api/explanations",
+    <>Failed to fetch explanations. Please retry later.</>,
+    {},
+    (data) => {
+      let res = Object.fromEntries(
+        Object.entries(data).map(([k, v]) => [k, {
+          why: DOMPurify.sanitize(v.why),
+          examples: DOMPurify.sanitize(v.examples),
+        }])
+      );
+      setExplanations(res);
+    });
+}
+
+function fetchVersions(setVersions, setVersion) {
+  fetchData(
+    "https://edulint.rechtackova.cz/api/versions",
+    <>Failed to fetch available versions. Please retry later.</>,
+    [],
+    (versions) => {
+      versions = versions.map(({ version }) => version.join("."));
+      setVersions(versions);
+      setVersion(versions[0]);
+    }
+  );
+}
 
 function analyze(code, version, setProblems, setStatus) {
   // plausible('check-button');
-
 
   fetch(`https://edulint.rechtackova.cz/api/${version}/analyze`, {
     method: "POST",
@@ -61,37 +100,8 @@ export function AnalysisBlock() {
       state.code = undefined;
     }
 
-    fetch("https://edulint.rechtackova.cz/api/explanations")
-      .then((response) => {
-        if (response.status !== 200) {
-          toast.error(<>Failed to fetch explanations. Please retry later.</>);
-          return {};
-        }
-        return response.json();
-      })
-      .then((data) => {
-        let res = Object.fromEntries(
-          Object.entries(data).map(([k, v]) => [k, {
-            why: DOMPurify.sanitize(v.why),
-            examples: DOMPurify.sanitize(v.examples),
-          }])
-        );
-        setExplanations(res);
-      });
-
-    fetch("https://edulint.rechtackova.cz/api/versions")
-      .then((response) => {
-        if (response.status !== 200) {
-          toast.error(<>Failed to fetch available versions. Please retry later.</>)
-          return [];
-        }
-        return response.json();
-      })
-      .then((versions) => {
-        versions = versions.map(({ version }) => version.join("."));
-        setVersions(versions);
-        setVersion(versions[0]);
-      })
+    fetchExplanations(setExplanations);
+    fetchVersions(setVersions, setVersion);
   }, []);
 
   return (

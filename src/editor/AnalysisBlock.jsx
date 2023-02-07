@@ -46,6 +46,8 @@ function analyze(code, version, setProblems, setStatus) {
 
 export function AnalysisBlock() {
   let { state } = useLocation();
+  let navigate = useNavigate();
+
   let [problems, setProblems] = React.useState([]);
   let [status, setStatus] = React.useState("init"); // init, linting, results or error
   let [explanations, setExplanations] = React.useState({});
@@ -104,10 +106,12 @@ export function AnalysisBlock() {
           </small>
         </div>
 
-        <CodeMirrorWrapper value={code} onChange={(value, viewUpdate) => { setCode(value); }} />
+        <CodeMirrorWrapper value={code} onChange={(value) => { setCode(value); }} />
 
-        <Buttons status={status} setStatus={setStatus} code={code} setCode={setCode}
-          versions={versions} version={version} onVersionChange={setVersion}
+        <Buttons status={status} versions={versions} version={version}
+          onLoad={(e) => loadFile(e, setCode, setStatus, navigate)}
+          onDownload={() => downloadFile(code)}
+          onVersionChange={setVersion}
           onCheck={() => { analyze(code, version, setProblems, setStatus); setStatus("linting"); }} />
 
         <FeedbackInfo />

@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { SecondaryLink as A } from "../utils/SecondaryLink";
 import fileDownload from "js-file-download";
 
-function loadFile(e, setCode, setStatus, navigate) {
+export function loadFile(e, setCode, setStatus, navigate) {
   let file = e.target.files[0];
   if (!file || !file.name.endsWith(".py")) {
     toast.warning(<>Select a <code>.py</code> file.</>)
@@ -20,7 +20,7 @@ function loadFile(e, setCode, setStatus, navigate) {
   navigate("/editor");
 }
 
-function downloadFile(code) {
+export function downloadFile(code) {
   if (!code) {
     toast.info(<>Unnecessary download of empty file.</>);
     return;
@@ -32,8 +32,7 @@ function downloadFile(code) {
     to="/faq#download-warning">here is what's happening.</Link></>);
 }
 
-export function Buttons({ status, setStatus, code, versions, version, setCode, onCheck, onVersionChange }) {
-  let navigate = useNavigate();
+export function Buttons({ status, versions, version, onLoad, onDownload, onVersionChange, onCheck }) {
   let isLinting = status === "linting";
 
   versions = versions.map((version) =>
@@ -42,8 +41,8 @@ export function Buttons({ status, setStatus, code, versions, version, setCode, o
 
   return (
     <InputGroup className="pt-3 pb-1">
-      <Form.Control type="file" accept=".py" onChange={(e) => loadFile(e, setCode, setStatus, navigate)} />
-      <Button variant="secondary" onClick={() => downloadFile(code)}>Download</Button>
+      <Form.Control type="file" accept=".py" onChange={onLoad} />
+      <Button variant="secondary" onClick={onDownload}>Download</Button>
       <DropdownButton variant="outline-primary" title={"v" + version}>
         {versions}
       </DropdownButton>

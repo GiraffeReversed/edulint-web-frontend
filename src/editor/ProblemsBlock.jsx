@@ -3,7 +3,7 @@ import Problem from "./Problem";
 import { Accordion } from "react-bootstrap";
 
 
-export default function ProblemsBlock({ status, problems }) {
+export default function ProblemsBlock({ status, problems, explanations }) {
   let content;
   switch (status) {
     case "init":
@@ -16,7 +16,11 @@ export default function ProblemsBlock({ status, problems }) {
       {
         if (problems.length > 0)
           content = <Accordion flush>
-            {problems.map(problem => <Problem {...problem} key={problem.path + problem.line + problem.code} />)}
+            {problems.map(problem => <Problem
+              key={problem.path + problem.line + problem.code}
+              {...problem}
+              explanation={explanations[problem.code]}
+            />)}
           </Accordion >;
         else
           content = <Alert variant="success">No problems found in the code :)</Alert>;

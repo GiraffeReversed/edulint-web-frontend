@@ -1,5 +1,6 @@
 import React from "react";
 import Split from "react-split";
+import { toast } from "react-toastify";
 
 import ProblemsBlock from "./ProblemsBlock";
 
@@ -49,6 +50,7 @@ export function AnalysisBlock() {
   let { state } = useLocation();
   let [problems, setProblems] = React.useState([]);
   let [status, setStatus] = React.useState("init"); // init, linting, or results
+  let [explanations, setExplanations] = React.useState({});
 
   let [code, setCode] = React.useState(state?.code?.slice() || "");
 
@@ -56,7 +58,16 @@ export function AnalysisBlock() {
     if (state) {
       state.code = undefined;
     }
-  })
+    fetch("https://edulint.rechtackova.cz/api/explanations")
+      .then((response) => {
+        if (response.status !== 200) {
+          toast.error(<>Failed to fetch explanations. Please retry later.</>);
+          return {};
+        }
+        return response.json();
+      })
+      .then((data) => setExplanations(data));
+  }, []);
 
   return (
     <Split className="d-flex flex-row flex-fill" id="analysis-block"
@@ -75,7 +86,7 @@ export function AnalysisBlock() {
 
         <FeedbackInfo />
       </div>
-      <ProblemsBlock status={status} problems={problems} />
+      <ProblemsBlock status={status} problems={problems} explanations={explanations} />
     </Split>
   )
 }

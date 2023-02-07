@@ -4,7 +4,7 @@ import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import { AccordionContext } from "react-bootstrap";
 import { Bullseye, Check2, ChevronDown, ChevronUp } from "react-bootstrap-icons";
 
-function CollapseToggle({ eventKey, callback }) {
+function CollapseToggle({ eventKey, callback, hasExplanation }) {
   const { activeEventKey } = React.useContext(AccordionContext);
 
   const decoratedOnClick = useAccordionButton(
@@ -15,13 +15,19 @@ function CollapseToggle({ eventKey, callback }) {
   const isCurrentEventKey = activeEventKey === eventKey;
 
   return (
-    <Button variant="outline-secondary" onClick={decoratedOnClick}>
+    <Button
+      variant={hasExplanation ? "outline-secondary" : "outline-light"}
+      onClick={decoratedOnClick}
+    >
       {isCurrentEventKey ? <ChevronUp /> : <ChevronDown />}
     </Button>
   );
 }
 
-export default function Problem({ path, line, column, code, text }) {
+export default function Problem({ path, line, column, source, code, text, explanation }) {
+  let why = explanation?.why;
+  let examples = explanation?.examples;
+
   return (
     <Card className="my-2">
       <Card.Header className="p-0">
@@ -30,12 +36,26 @@ export default function Problem({ path, line, column, code, text }) {
           <div className="p-1 small">
             {line}: {text.replace("<", "&lt;").replace(">", "&gt;")}
           </div>
-          <CollapseToggle eventKey={path + line + code} />
+          <CollapseToggle eventKey={path + line + code} hasExplanation={explanation !== undefined} />
           <Button variant="outline-success"><Check2 /></Button>
         </ButtonGroup>
       </Card.Header>
       <Accordion.Collapse eventKey={path + line + code}>
-        <Card.Body>I'm mister meeseeks, look at me!</Card.Body>
+        <Card.Body className="small">
+          {why && <>
+            <h6>Why is it a problem?</h6>
+            <div dangerouslySetInnerHTML={{ __html: why }} />
+            <hr className="my-2" />
+          </>}
+          {examples && <>
+            <h6>How to solve it?</h6>
+            <div dangerouslySetInnerHTML={{ __html: examples }} />
+            <hr className="my-2" /></>}
+          <p className="text-muted tiny-text mb-0">
+            <span className="fw-bold">Debug</span> {/*v${getSelectedVersion()}*/} {source} {line} {code}
+            <span className="text-break">${path.replace(/\.py$/, "").replace(/^[a-z]*\//, "")}</span>
+          </p>
+        </Card.Body>
       </Accordion.Collapse>
     </Card>
   );

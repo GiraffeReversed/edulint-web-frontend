@@ -11,6 +11,8 @@ import Privacy from './Privacy';
 
 import 'bootstrap-dark-5/dist/css/bootstrap-nightshade.min.css';
 import 'react-toastify/dist/ReactToastify.css';
+import './code_highlighting.css';
+import './code_highlighting_dark.css';
 import './App.css';
 import { toast, ToastContainer } from 'react-toastify';
 

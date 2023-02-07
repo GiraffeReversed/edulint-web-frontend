@@ -102,3 +102,7 @@ html.dark .CodeMirror-scrollbar-filler {
   width: 20px;
   height: 20px;
 }
+
+.tiny-text {
+  font-size: xx-small;
+}

@@ -1,4 +1,6 @@
-import { Alert, ListGroup } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
+import Problem from "./Problem";
+import { Accordion } from "react-bootstrap";
 
 
 export default function ProblemsBlock({ status, problems }) {
@@ -13,7 +15,9 @@ export default function ProblemsBlock({ status, problems }) {
     case "results":
       {
         if (problems.length > 0)
-          content = problems.map(problem => <ListGroup.Item>{problem.line} {problem.code} {problem.text}</ListGroup.Item>);
+          content = <Accordion flush>
+            {problems.map(problem => <Problem {...problem} key={problem.path + problem.line + problem.code} />)}
+          </Accordion >;
         else
           content = <Alert variant="success">No problems found in the code :)</Alert>;
         break;

@@ -90,3 +90,15 @@ html.dark .CodeMirror-scrollbar-filler {
 .card-container .card:last-child {
   margin-bottom: 0px !important;
 }
+
+.problem button {
+  border: none !important;
+  padding: 0.25rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.problem svg {
+  width: 20px;
+  height: 20px;
+}

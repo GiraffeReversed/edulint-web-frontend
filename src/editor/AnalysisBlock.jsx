@@ -44,7 +44,6 @@ function analyze(code, setProblems, setStatus) {
         throw error;
       }
     });
-  // document.getElementById("keybind").hidden = false;
 }
 
 export function AnalysisBlock() {
@@ -85,7 +84,9 @@ export function AnalysisBlock() {
       <div id="code-block" className="d-flex flex-column ms-3 me-2 mt-1 mb-2">
         <div className="d-flex flex-row justify-content-between">
           <h5>Code</h5>
-          <small id="keybind" hidden><CtrlShortcut letter="D" /> to mark current line as solved</small>
+          <small hidden={problems.length == 0}>
+            <CtrlShortcut letter="D" /> to mark current line as solved
+          </small>
         </div>
 
         <CodeMirrorWrapper value={code} onChange={(value, viewUpdate) => { setCode(value); }} />

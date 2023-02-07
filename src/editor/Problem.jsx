@@ -31,9 +31,9 @@ export default function Problem({ path, line, column, source, code, text, explan
   return (
     <Card className="my-2">
       <Card.Header className="p-0">
-        <ButtonGroup className="problem">
+        <ButtonGroup className="problem d-flex">
           <Button variant="outline-warning"><Bullseye /></Button>
-          <div className="p-1 small">
+          <div className="p-1 small w-100">
             {line}: {text.replace("<", "&lt;").replace(">", "&gt;")}
           </div>
           <CollapseToggle eventKey={path + line + code} hasExplanation={explanation !== undefined} />

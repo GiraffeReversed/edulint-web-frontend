@@ -1,4 +1,4 @@
-import { InputGroup, Button, Form, Spinner } from "react-bootstrap";
+import { InputGroup, Button, Form, Spinner, DropdownButton, Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { SecondaryLink as A } from "../utils/SecondaryLink";
@@ -32,13 +32,21 @@ function downloadFile(code) {
     to="/faq#download-warning">here is what's happening.</Link></>);
 }
 
-export function Buttons({ status, setStatus, code, setCode, onCheck }) {
+export function Buttons({ status, setStatus, code, versions, version, setCode, onCheck, onVersionChange }) {
   let navigate = useNavigate();
   let isLinting = status === "linting";
+
+  versions = versions.map((version) =>
+    <Dropdown.Item key={version} onClick={() => onVersionChange(version)}>v{version}</Dropdown.Item>
+  );
+
   return (
     <InputGroup className="pt-3 pb-1">
       <Form.Control type="file" accept=".py" onChange={(e) => loadFile(e, setCode, setStatus, navigate)} />
       <Button variant="secondary" onClick={() => downloadFile(code)}>Download</Button>
+      <DropdownButton variant="outline-primary" title={"v" + version}>
+        {versions}
+      </DropdownButton>
       <Button onClick={onCheck} disabled={isLinting}>{isLinting && <><Spinner
         as="span"
         animation="border"

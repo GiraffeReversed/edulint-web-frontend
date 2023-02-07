@@ -11,11 +11,9 @@ import { Navigate, useLoaderData, useLocation } from "react-router-dom";
 import { Buttons, FeedbackInfo } from './AnalysisBlockElems';
 import CodeMirrorWrapper from './CodeBlock';
 
-function analyze(code, setProblems, setStatus) {
+function analyze(code, version, setProblems, setStatus) {
   // plausible('check-button');
 
-  // let version = getSelectedVersion();
-  let version = "2.0.0";
 
   fetch(`https://edulint.rechtackova.cz/api/${version}/analyze`, {
     method: "POST",
@@ -49,15 +47,18 @@ function analyze(code, setProblems, setStatus) {
 export function AnalysisBlock() {
   let { state } = useLocation();
   let [problems, setProblems] = React.useState([]);
-  let [status, setStatus] = React.useState("init"); // init, linting, or results
+  let [status, setStatus] = React.useState("init"); // init, linting, results or error
   let [explanations, setExplanations] = React.useState({});
+  let [versions, setVersions] = React.useState([]);
 
   let [code, setCode] = React.useState(state?.code?.slice() || "");
+  let [version, setVersion] = React.useState(null);
 
   React.useEffect(() => {
     if (state) {
       state.code = undefined;
     }
+
     fetch("https://edulint.rechtackova.cz/api/explanations")
       .then((response) => {
         if (response.status !== 200) {
@@ -75,6 +76,20 @@ export function AnalysisBlock() {
         );
         setExplanations(res);
       });
+
+    fetch("https://edulint.rechtackova.cz/api/versions")
+      .then((response) => {
+        if (response.status !== 200) {
+          toast.error(<>Failed to fetch available versions. Please retry later.</>)
+          return [];
+        }
+        return response.json();
+      })
+      .then((versions) => {
+        versions = versions.map(({ version }) => version.join("."));
+        setVersions(versions);
+        setVersion(versions[0]);
+      })
   }, []);
 
   return (
@@ -92,7 +107,8 @@ export function AnalysisBlock() {
         <CodeMirrorWrapper value={code} onChange={(value, viewUpdate) => { setCode(value); }} />
 
         <Buttons status={status} setStatus={setStatus} code={code} setCode={setCode}
-          onCheck={() => { analyze(code, setProblems, setStatus); setStatus("linting"); }} />
+          versions={versions} version={version} onVersionChange={setVersion}
+          onCheck={() => { analyze(code, version, setProblems, setStatus); setStatus("linting"); }} />
 
         <FeedbackInfo />
       </div>

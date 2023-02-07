@@ -3,7 +3,7 @@ import { Outlet, createBrowserRouter, RouterProvider, redirect } from "react-rou
 
 import Navbar from './Navbar';
 import { ModeContext, getMode, setModeToUI } from './utils/Mode';
-import AnalysisBlock from './editor/AnalysisBlock';
+import { AnalysisBlock, AnalysisBlockCodeRedirector } from './editor/AnalysisBlock';
 import About from './About';
 import FAQ from './FAQ';
 import Teachers from './Teachers';
@@ -21,13 +21,11 @@ const router = createBrowserRouter(
       path: "/", element: <Body />,
       children: [
         { index: true, element: <AnalysisBlock /> },
+        { path: "editor", element: <AnalysisBlock /> },
         {
-          path: "editor/:name?",
-          element: <AnalysisBlock />,
+          path: "editor/:name",
+          element: <AnalysisBlockCodeRedirector />,
           loader: async ({ params }) => {
-            if (!params.name)
-              return null;
-
             const res = await fetch("https://edulint.rechtackova.cz/api/code/" + params.name);
 
             if (res.status === 404) {

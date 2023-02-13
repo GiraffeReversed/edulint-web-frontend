@@ -28,7 +28,7 @@ export function downloadFile(code) {
 
   fileDownload(code, "edulint_out.py");
 
-  toast(<>Is your browser warning you about a harmful file? The file is fine, but <Link
+  toast.info(<>Is your browser warning you about a harmful file? The file is fine, but <Link
     to="/faq#download-warning">here is what's happening.</Link></>);
 }
 

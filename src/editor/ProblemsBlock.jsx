@@ -9,7 +9,7 @@ export default function ProblemsBlock({ status, problems, explanations }) {
     case "init":
     case "linting":
       {
-        content = <Alert variant="info">Code was not linted yet.</Alert>;
+        content = <Alert variant="secondary">Code was not linted yet.</Alert>;
         break;
       }
     case "results":

@@ -53,7 +53,7 @@ export default function Problem({ path, line, column, source, code, text, explan
             <hr className="my-2" /></>}
           <p className="text-muted tiny-text mb-0">
             <span className="fw-bold">Debug</span> {/*v${getSelectedVersion()}*/} {source} {line} {code}
-            <span className="text-break">${path.replace(/\.py$/, "").replace(/^[a-z]*\//, "")}</span>
+            <span className="text-break"> {path.replace(/\.py$/, "").replace(/^[a-z]*\//, "")}</span>
           </p>
         </Card.Body>
       </Accordion.Collapse>

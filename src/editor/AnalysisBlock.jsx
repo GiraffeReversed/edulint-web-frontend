@@ -9,7 +9,7 @@ import CtrlShortcut from "../utils/CtrlShortcut";
 
 import { Navigate, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import { Buttons, FeedbackInfo, downloadFile, loadFile } from './AnalysisBlockElems';
-import CodeMirrorWrapper from './CodeBlock';
+import CodeMirrorWrapper, { onCodeSelect } from './CodeBlock';
 
 function fetchData(url, toastContents, errorReturn, processResult) {
   fetch(url)
@@ -120,6 +120,7 @@ export function AnalysisBlock() {
 
         <CodeMirrorWrapper value={code} onChange={setCode} problems={problems}
           onProblemArrowClick={setActiveProblemsRange}
+          onCodeSelect={update => onCodeSelect(update, setActiveProblemsRange)}
         />
 
         <Buttons status={status} versions={versions} version={version}

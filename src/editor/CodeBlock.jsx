@@ -3,6 +3,7 @@ import { useCodeMirror } from "@uiw/react-codemirror";
 import { python } from '@codemirror/lang-python';
 import { gutter, GutterMarker } from "@codemirror/view";
 import { StateField, StateEffect, RangeSet } from "@codemirror/state";
+import { EditorView } from "@codemirror/view";
 
 import { okaidia } from "@uiw/codemirror-theme-okaidia";
 import { githubLight } from "@uiw/codemirror-theme-github";
@@ -60,6 +61,18 @@ class ProblemArrow extends GutterMarker {
   }
 }
 
+function getProblemRange(state, from, to) {
+  let arrows = state.field(problemArrowState);
+
+  let min = Infinity, max = -Infinity;
+  arrows.between(from, to, (_from, _to, val) => {
+    min = Math.min(min, val.index);
+    max = Math.max(max, val.index);
+  });
+
+  return { min, max };
+}
+
 function problemsGutter(onProblemArrowClick) {
   return [
     problemArrowState,
@@ -69,15 +82,8 @@ function problemsGutter(onProblemArrowClick) {
       initialSpacer: () => new ProblemArrow(0),
       domEventHandlers: {
         mousedown(view, line) {
-          let arrows = view.state.field(problemArrowState);
-
-          let min = Infinity, max = -Infinity;
-          arrows.between(line.from, line.from, (_from, _to, val) => {
-            min = Math.min(min, val.index);
-            max = Math.max(max, val.index);
-          });
-
-          onProblemArrowClick({ min, max });
+          let activeRange = getProblemRange(view.state, line.from, line.from);
+          onProblemArrowClick(activeRange);
           return true;
         }
       }
@@ -85,14 +91,28 @@ function problemsGutter(onProblemArrowClick) {
   ];
 }
 
-export default function CodeMirrorWrapper({ value, onChange, problems, onProblemArrowClick }) {
+export function onCodeSelect(update, setActiveProblemsRange) {
+  let selection = update.state.selection.main;
+  let activeRange = getProblemRange(
+    update.state,
+    update.state.doc.lineAt(selection.from).from,
+    update.state.doc.lineAt(selection.to).from
+  );
+  setActiveProblemsRange(activeRange);
+}
+
+export default function CodeMirrorWrapper({ value, onChange, problems, onProblemArrowClick, onCodeSelect }) {
   let [mode,] = React.useContext(ModeContext);
   const editor = React.useRef();
 
   const { setContainer, view } = useCodeMirror({
     extensions: [
       python(),
-      [...problemsGutter(onProblemArrowClick)]
+      [...problemsGutter(onProblemArrowClick)],
+      EditorView.updateListener.of(update => {
+        if (update.selectionSet)
+          onCodeSelect(update);
+      })
     ],
     value: value,
     theme: mode === "light" ? EDITOR_LIGHT_THEME : EDITOR_DARK_THEME,

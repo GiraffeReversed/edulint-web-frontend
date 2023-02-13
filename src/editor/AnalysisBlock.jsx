@@ -95,6 +95,8 @@ export function AnalysisBlock() {
   let [code, setCode] = React.useState(state?.code?.slice() || "");
   let [version, setVersion] = React.useState(null);
 
+  let [activeProblemsRange, setActiveProblemsRange] = React.useState({ min: undefined, max: undefined });
+
   React.useEffect(() => {
     if (state) {
       state.code = undefined;
@@ -116,7 +118,9 @@ export function AnalysisBlock() {
           </small>
         </div>
 
-        <CodeMirrorWrapper value={code} onChange={setCode} problems={problems} />
+        <CodeMirrorWrapper value={code} onChange={setCode} problems={problems}
+          onProblemArrowClick={setActiveProblemsRange}
+        />
 
         <Buttons status={status} versions={versions} version={version}
           onLoad={(e) => loadFile(e, setCode, setProblems, setStatus, navigate)}
@@ -126,7 +130,9 @@ export function AnalysisBlock() {
 
         <FeedbackInfo />
       </div>
-      <ProblemsBlock status={status} problems={problems} explanations={explanations} />
+      <ProblemsBlock status={status} problems={problems} explanations={explanations}
+        activeProblemsRange={activeProblemsRange}
+      />
     </Split>
   )
 }

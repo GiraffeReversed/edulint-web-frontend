@@ -23,12 +23,15 @@ const problemArrowState = StateField.define({
   create() { return RangeSet.empty; },
 
   update(set, transaction) {
-    let poss = [];
     set = set.map(transaction.changes);
-    for (let e of transaction.effects) {
-      if (e.is(problemArrowEffect))
-        poss.push(problemArrow.range(e.value.pos));
-    }
+
+    let poss = [];
+    transaction.effects.forEach((e, i) => {
+      if (e.is(problemArrowEffect)) {
+        let v = new ProblemArrow(i).range(e.value.pos);
+        poss.push(v);
+      }
+    });
 
     if (poss.length > 0)
       return RangeSet.of(poss);
@@ -43,7 +46,12 @@ function setProblemArrows(view, problems) {
   });
 }
 
-const problemArrow = new class extends GutterMarker {
+class ProblemArrow extends GutterMarker {
+  constructor(index) {
+    super();
+    this.index = index;
+  }
+
   toDOM() {
     let span = document.createElement("span");
     let arrow = ReactDOMServer.renderToStaticMarkup(<ArrowRight />);
@@ -52,32 +60,40 @@ const problemArrow = new class extends GutterMarker {
   }
 }
 
-const problemsGutter = [
-  problemArrowState,
-  gutter({
-    class: "cm-problems-gutter",
-    markers: v => v.state.field(problemArrowState),
-    initialSpacer: () => problemArrow,
-    domEventHandlers: {
-      mousedown(view, line) {
-        console.log("mousedown");
-        return true;
+function problemsGutter(onProblemArrowClick) {
+  return [
+    problemArrowState,
+    gutter({
+      class: "cm-problems-gutter",
+      markers: v => v.state.field(problemArrowState),
+      initialSpacer: () => new ProblemArrow(0),
+      domEventHandlers: {
+        mousedown(view, line) {
+          let arrows = view.state.field(problemArrowState);
+
+          let min = Infinity, max = -Infinity;
+          arrows.between(line.from, line.from, (_from, _to, val) => {
+            min = Math.min(min, val.index);
+            max = Math.max(max, val.index);
+          });
+
+          onProblemArrowClick({ min, max });
+          return true;
+        }
       }
-    }
-  }),
-]
+    }),
+  ];
+}
 
-const extensions = [
-  python(),
-  [...problemsGutter],
-];
-
-export default function CodeMirrorWrapper({ value, onChange, problems }) {
+export default function CodeMirrorWrapper({ value, onChange, problems, onProblemArrowClick }) {
   let [mode,] = React.useContext(ModeContext);
   const editor = React.useRef();
 
   const { setContainer, view } = useCodeMirror({
-    extensions: extensions,
+    extensions: [
+      python(),
+      [...problemsGutter(onProblemArrowClick)]
+    ],
     value: value,
     theme: mode === "light" ? EDITOR_LIGHT_THEME : EDITOR_DARK_THEME,
     placeholder: "Enter your code here...",

@@ -106,3 +106,8 @@ html.dark .CodeMirror-scrollbar-filler {
 .tiny-text {
   font-size: xx-small;
 }
+
+.problem.active {
+  border-radius: 0.25rem !important;
+  outline: 1px solid;
+}

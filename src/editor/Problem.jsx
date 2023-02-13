@@ -24,14 +24,14 @@ function CollapseToggle({ eventKey, callback, hasExplanation }) {
   );
 }
 
-export default function Problem({ path, line, column, source, code, text, explanation }) {
+export default function Problem({ path, line, column, source, code, text, explanation, active }) {
   let why = explanation?.why;
   let examples = explanation?.examples;
 
   return (
-    <Card className="my-2">
+    <Card className={(active ? "active " : "") + "problem my-2"}>
       <Card.Header className="p-0">
-        <ButtonGroup className="problem d-flex">
+        <ButtonGroup className="d-flex">
           <Button variant="outline-warning"><Bullseye /></Button>
           <div className="p-1 small w-100">
             {line}: {text.replace("<", "&lt;").replace(">", "&gt;")}

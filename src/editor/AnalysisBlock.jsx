@@ -119,7 +119,7 @@ export function AnalysisBlock() {
         <CodeMirrorWrapper value={code} onChange={setCode} problems={problems} />
 
         <Buttons status={status} versions={versions} version={version}
-          onLoad={(e) => loadFile(e, setCode, setStatus, navigate)}
+          onLoad={(e) => loadFile(e, setCode, setProblems, setStatus, navigate)}
           onDownload={() => downloadFile(code)}
           onVersionChange={setVersion}
           onCheck={() => { analyze(code, version, setProblems, setStatus); setStatus("linting"); }} />

@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { SecondaryLink as A } from "../utils/SecondaryLink";
 import fileDownload from "js-file-download";
 
-export function loadFile(e, setCode, setStatus, navigate) {
+export function loadFile(e, setCode, setProblems, setStatus, navigate) {
   let file = e.target.files[0];
   if (!file || !file.name.endsWith(".py")) {
     toast.warning(<>Select a <code>.py</code> file.</>)
@@ -12,7 +12,7 @@ export function loadFile(e, setCode, setStatus, navigate) {
   }
 
   let reader = new FileReader();
-  reader.onload = () => setCode(reader.result);
+  reader.onload = () => { setCode(reader.result); setProblems([]); };
   reader.readAsText(file);
 
   setStatus("init");

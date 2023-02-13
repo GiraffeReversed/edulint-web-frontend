@@ -34,7 +34,7 @@ export default function Problem({ path, line, column, source, code, text, explan
         <ButtonGroup className="d-flex">
           <Button variant="outline-warning"><Bullseye /></Button>
           <div className="p-1 small w-100">
-            {line}: {text.replace("<", "&lt;").replace(">", "&gt;")}
+            {line}: {text}
           </div>
           <CollapseToggle eventKey={path + line + code} hasExplanation={explanation !== undefined} />
           <Button variant="outline-success" active={solved} onClick={onProblemSolvedClick}><Check2 /></Button>

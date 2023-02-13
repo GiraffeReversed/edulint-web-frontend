@@ -1,70 +1,111 @@
 import React from "react";
-import CodeMirror from "@uiw/react-codemirror";
+import { useCodeMirror } from "@uiw/react-codemirror";
 import { python } from '@codemirror/lang-python';
-
-import { InputGroup, Form, Button } from "react-bootstrap";
-
-import CtrlShortcut from "../utils/CtrlShortcut";
-import { SecondaryLink as A } from "../utils/SecondaryLink";
+import { gutter, GutterMarker } from "@codemirror/view";
+import { StateField, StateEffect, RangeSet } from "@codemirror/state";
 
 import { okaidia } from "@uiw/codemirror-theme-okaidia";
 import { githubLight } from "@uiw/codemirror-theme-github";
-import { useLoaderData, useNavigate } from "react-router-dom";
 import { ModeContext } from "../utils/Mode";
-import { toast } from "react-toastify";
+
+import ReactDOMServer from 'react-dom/server';
+
+import { ArrowRight } from "react-bootstrap-icons";
 
 let EDITOR_LIGHT_THEME = githubLight;
 let EDITOR_DARK_THEME = okaidia;
 
-function loadFile(e, setCode, navigate) {
-  let file = e.target.files[0];
-  if (!file || !file.name.endsWith(".py")) {
-    toast.warning(<>Select a <code>.py</code> file.</>)
-    return;
+const problemArrowEffect = StateEffect.define({
+  map: (val, mapping) => ({ pos: mapping.mapPos(val.pos) })
+})
+
+const problemArrowState = StateField.define({
+  create() { return RangeSet.empty; },
+
+  update(set, transaction) {
+    let poss = [];
+    set = set.map(transaction.changes);
+    for (let e of transaction.effects) {
+      if (e.is(problemArrowEffect))
+        poss.push(problemArrow.range(e.value.pos));
+    }
+
+    if (poss.length > 0)
+      return RangeSet.of(poss);
+
+    return set;
   }
+})
 
-  let reader = new FileReader();
-  reader.onload = () => setCode(reader.result);
-  reader.readAsText(file);
-  navigate("/editor");
-
-  // TODO reset linted problems
+function setProblemArrows(view, problems) {
+  view.dispatch({
+    effects: problems.map(problem => problemArrowEffect.of({ pos: view.state.doc.line(problem.line).from }))
+  });
 }
 
-export default function CodeBlock() {
+const problemArrow = new class extends GutterMarker {
+  toDOM() {
+    let span = document.createElement("span");
+    let arrow = ReactDOMServer.renderToStaticMarkup(<ArrowRight />);
+    span.innerHTML = arrow;
+    return span;
+  }
+}
+
+const problemsGutter = [
+  problemArrowState,
+  gutter({
+    class: "cm-problems-gutter",
+    markers: v => v.state.field(problemArrowState),
+    initialSpacer: () => problemArrow,
+    domEventHandlers: {
+      mousedown(view, line) {
+        console.log("mousedown");
+        return true;
+      }
+    }
+  }),
+]
+
+const extensions = [
+  python(),
+  [...problemsGutter],
+];
+
+export default function CodeMirrorWrapper({ value, onChange, problems }) {
   let [mode,] = React.useContext(ModeContext);
-  let [code, setCode] = React.useState('');
-  const navigate = useNavigate();
+  const editor = React.useRef();
 
-  let loaded = useLoaderData();
-  if (loaded)
-    code = loaded;
+  const { setContainer, view } = useCodeMirror({
+    extensions: extensions,
+    value: value,
+    theme: mode === "light" ? EDITOR_LIGHT_THEME : EDITOR_DARK_THEME,
+    placeholder: "Enter your code here...",
+    className: "d-flex flex-fill",
+    onChange: onChange,
+  });
 
-  return (
-    <div id="code-block" className="d-flex flex-column ms-3 me-2 mt-1 mb-2">
-      <div className="d-flex flex-row justify-content-between">
-        <h5>Code</h5>
-        <small id="keybind" hidden><CtrlShortcut letter="D" /> to mark current line as solved</small>
-      </div>
+  React.useEffect(() => {
+    if (editor.current) {
+      setContainer(editor.current);
+    }
 
-      <CodeMirror
-        className="d-flex flex-fill"
-        value={code}
-        placeholder="Enter your code here..."
-        theme={mode === "light" ? EDITOR_LIGHT_THEME : EDITOR_DARK_THEME}
-        extensions={[python()]}
-      />
+    // console.log(view);
+    // if (view) {
+    //   // view.dispatch({ changes: { from: 2, insert: "asdasdad" } });
+    //   // view.dispatch({ selection: { ranges: { from: 2, to: 3 } } });
+    //   console.log(state.doc.line(3));
+    //   view.dispatch({ selection: { anchor: state.doc.line(3).to } });
 
-      <InputGroup className="pt-3 pb-1">
-        <Form.Control type="file" accept=".py" onChange={(e) => loadFile(e, setCode, navigate)} />
-        <Button variant="secondary">Download</Button>
-        <Button>Check</Button>
-      </InputGroup>
+    //   // view.dispatch({ selection: { anchor: state.doc.lineAt(2) } });
+    //   // setView(view);
+    // }
+  }, [setContainer]);
 
-      <p className="text-muted small mb-0 text-center">Problems? Thoughts? Improvement suggestions? <A
-        href="https://docs.google.com/forms/d/e/1FAIpQLSfiQDmLX_KdOdoGJKC8qhNfYNG6O7sNiNk-x7as7H02DI7XhQ/viewform">
-        Let me know.</A>
-      </p>
-    </div>
-  );
+  React.useEffect(() => {
+    if (view)
+      setProblemArrows(view, problems);
+  }, [view, problems]);
+
+  return <div ref={editor} className="d-flex flex-fill" />;
 }

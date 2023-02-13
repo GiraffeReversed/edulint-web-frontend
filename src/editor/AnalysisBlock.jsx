@@ -116,7 +116,7 @@ export function AnalysisBlock() {
           </small>
         </div>
 
-        <CodeMirrorWrapper value={code} onChange={setCode} />
+        <CodeMirrorWrapper value={code} onChange={setCode} problems={problems} />
 
         <Buttons status={status} versions={versions} version={version}
           onLoad={(e) => loadFile(e, setCode, setStatus, navigate)}

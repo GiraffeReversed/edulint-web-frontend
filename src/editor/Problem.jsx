@@ -30,7 +30,7 @@ export default function Problem({ path, line, column, source, code, text, explan
 
   return (
     <Card className={(active ? "active " : "") + "problem my-2"}>
-      <Card.Header className="p-0">
+      <Card.Header className="p-0 border-bottom-0">
         <ButtonGroup className="d-flex">
           <Button variant="outline-warning"><Bullseye /></Button>
           <div className="p-1 small w-100">
@@ -41,7 +41,7 @@ export default function Problem({ path, line, column, source, code, text, explan
         </ButtonGroup>
       </Card.Header>
       <Accordion.Collapse eventKey={path + line + code}>
-        <Card.Body className="small">
+        <Card.Body className="small border-top">
           {why && <>
             <h6>Why is it a problem?</h6>
             <div dangerouslySetInnerHTML={{ __html: why }} />

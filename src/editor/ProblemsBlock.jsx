@@ -3,7 +3,11 @@ import Problem from "./Problem";
 import { Accordion } from "react-bootstrap";
 
 
-export default function ProblemsBlock({ status, problems, explanations, activeProblemsRange }) {
+export function toggleProblemSolved(i, solvedProblems, setSolvedProblems) {
+  setSolvedProblems(solvedProblems.map((s, j) => i === j ? !s : s));
+}
+
+export default function ProblemsBlock({ status, problems, explanations, activeProblemsRange, solvedProblems, onProblemSolvedClick }) {
   let content;
   switch (status) {
     case "init":
@@ -21,6 +25,8 @@ export default function ProblemsBlock({ status, problems, explanations, activePr
               {...problem}
               explanation={explanations[problem.code]}
               active={activeProblemsRange.min <= i && i <= activeProblemsRange.max}
+              solved={solvedProblems[i]}
+              onProblemSolvedClick={() => onProblemSolvedClick(i)}
             />)}
           </Accordion >;
         else

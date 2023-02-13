@@ -24,7 +24,7 @@ function CollapseToggle({ eventKey, callback, hasExplanation }) {
   );
 }
 
-export default function Problem({ path, line, column, source, code, text, explanation, active }) {
+export default function Problem({ path, line, column, source, code, text, explanation, active, solved, onProblemSolvedClick }) {
   let why = explanation?.why;
   let examples = explanation?.examples;
 
@@ -37,7 +37,7 @@ export default function Problem({ path, line, column, source, code, text, explan
             {line}: {text.replace("<", "&lt;").replace(">", "&gt;")}
           </div>
           <CollapseToggle eventKey={path + line + code} hasExplanation={explanation !== undefined} />
-          <Button variant="outline-success"><Check2 /></Button>
+          <Button variant="outline-success" active={solved} onClick={onProblemSolvedClick}><Check2 /></Button>
         </ButtonGroup>
       </Card.Header>
       <Accordion.Collapse eventKey={path + line + code}>

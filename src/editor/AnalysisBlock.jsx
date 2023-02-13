@@ -3,7 +3,7 @@ import Split from "react-split";
 import { toast } from "react-toastify";
 import DOMPurify from "dompurify";
 
-import ProblemsBlock from "./ProblemsBlock";
+import ProblemsBlock, { toggleProblemSolved } from "./ProblemsBlock";
 
 import CtrlShortcut from "../utils/CtrlShortcut";
 
@@ -51,7 +51,7 @@ function fetchVersions(setVersions, setVersion) {
   );
 }
 
-function analyze(code, version, setProblems, setStatus) {
+function analyze(code, version, setProblems, setSolvedProblems, setStatus) {
   // plausible('check-button');
 
   fetch(`https://edulint.rechtackova.cz/api/${version}/analyze`, {
@@ -72,6 +72,7 @@ function analyze(code, version, setProblems, setStatus) {
     })
     .then(problems => {
       setProblems(problems);
+      setSolvedProblems(new Array(problems.length).fill(false));
       setStatus("results");
     })
     .catch(error => {
@@ -88,6 +89,7 @@ export function AnalysisBlock() {
   let navigate = useNavigate();
 
   let [problems, setProblems] = React.useState([]);
+  let [solvedProblems, setSolvedProblems] = React.useState([]);
   let [status, setStatus] = React.useState("init"); // init, linting, results or error
   let [explanations, setExplanations] = React.useState({});
   let [versions, setVersions] = React.useState([]);
@@ -127,12 +129,12 @@ export function AnalysisBlock() {
           onLoad={(e) => loadFile(e, setCode, setProblems, setStatus, navigate)}
           onDownload={() => downloadFile(code)}
           onVersionChange={setVersion}
-          onCheck={() => { analyze(code, version, setProblems, setStatus); setStatus("linting"); }} />
+          onCheck={() => { analyze(code, version, setProblems, setSolvedProblems, setStatus); setStatus("linting"); }} />
 
         <FeedbackInfo />
       </div>
-      <ProblemsBlock status={status} problems={problems} explanations={explanations}
-        activeProblemsRange={activeProblemsRange}
+      <ProblemsBlock status={status} problems={problems} explanations={explanations} solvedProblems={solvedProblems}
+        activeProblemsRange={activeProblemsRange} onProblemSolvedClick={i => toggleProblemSolved(i, solvedProblems, setSolvedProblems)}
       />
     </Split>
   )

@@ -44,7 +44,6 @@ function fetchVersions(setVersions, setVersion) {
     <>Failed to fetch available versions. Please retry later.</>,
     [],
     (versions) => {
-      versions = versions.map(({ version }) => version.join("."));
       setVersions(versions);
       setVersion(versions[0]);
     }

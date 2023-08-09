@@ -24,7 +24,7 @@ function fetchData(url, toastContents, errorReturn, processResult) {
 
 function fetchExplanations(setExplanations) {
   fetchData(
-    "https://edulint.rechtackova.cz/api/explanations",
+    "https://edulint.com/api/explanations",
     <>Failed to fetch explanations. Please retry later.</>,
     {},
     (data) => {
@@ -40,7 +40,7 @@ function fetchExplanations(setExplanations) {
 
 function fetchVersions(setVersions, setVersion) {
   fetchData(
-    "https://edulint.rechtackova.cz/api/versions",
+    "https://edulint.com/api/versions",
     <>Failed to fetch available versions. Please retry later.</>,
     [],
     (versions) => {
@@ -54,7 +54,7 @@ function fetchVersions(setVersions, setVersion) {
 function analyze(code, version, setProblems, setSolvedProblems, setStatus) {
   // plausible('check-button');
 
-  fetch(`https://edulint.rechtackova.cz/api/${version}/analyze`, {
+  fetch(`https://edulint.com/api/${version}/analyze`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

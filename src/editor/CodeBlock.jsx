@@ -1,7 +1,7 @@
 import React from "react";
 import { useCodeMirror } from "@uiw/react-codemirror";
 import { python } from '@codemirror/lang-python';
-import { gutter, GutterMarker } from "@codemirror/view";
+import { gutter, GutterMarker, keymap } from "@codemirror/view";
 import { StateField, StateEffect, RangeSet } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 
@@ -13,6 +13,8 @@ import ReactDOMServer from 'react-dom/server';
 
 import { ArrowRight } from "react-bootstrap-icons";
 import { toast } from "react-toastify";
+import CtrlShortcut from "../utils/CtrlShortcut";
+import { SecondaryLink } from "../utils/SecondaryLink";
 
 let EDITOR_LIGHT_THEME = githubLight;
 let EDITOR_DARK_THEME = okaidia;
@@ -92,13 +94,17 @@ function problemsGutter(onProblemArrowClick) {
   ];
 }
 
-export function onCodeSelect(update, setActiveProblemsRange) {
-  let selection = update.state.selection.main;
-  let activeRange = getProblemRange(
-    update.state,
-    update.state.doc.lineAt(selection.from).from,
-    update.state.doc.lineAt(selection.to).from
+export function getSelectedRange(state) {
+  let selection = state.selection.main;
+  return getProblemRange(
+    state,
+    state.doc.lineAt(selection.from).from,
+    state.doc.lineAt(selection.to).from
   );
+}
+
+export function onCodeSelect(update, setActiveProblemsRange) {
+  let activeRange = getSelectedRange(update.state);
   setActiveProblemsRange(activeRange);
 }
 
@@ -129,7 +135,16 @@ export function useCodeMirrorCustom({ value, onChange, onProblemArrowClick, onCo
       EditorView.updateListener.of(update => {
         if (update.selectionSet)
           onCodeSelect(update);
-      })
+      }),
+      keymap.of([
+        {
+          key: "Ctrl-s", run: () =>
+            toast.info(<>
+              <CtrlShortcut letter="S" /> does nothing on purpose.
+              <SecondaryLink href="/faq#ctrl-s-captured">Here's why.</SecondaryLink>
+            </>)
+        },
+      ])
     ],
     value: value,
     theme: mode === "light" ? EDITOR_LIGHT_THEME : EDITOR_DARK_THEME,

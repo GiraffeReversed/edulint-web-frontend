@@ -45,6 +45,10 @@ html.dark .content {
   border-radius: 0.3rem;
 }
 
+html.dark .cm-gutters {
+  border-right: 1px solid #ffffff38;
+}
+
 #analysis-block {
   overflow-y: hidden;
 }

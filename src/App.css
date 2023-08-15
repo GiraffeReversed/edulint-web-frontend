@@ -87,7 +87,11 @@ html.dark .cm-gutters {
 
 .problem.active {
   border-radius: 0.25rem !important;
-  outline: 1px solid;
+  outline: 1px solid #0003;
+}
+
+html.dark .problem.active {
+  outline-color: #fff6;
 }
 
 .explCollapseButton.noExpl,

@@ -12,6 +12,7 @@ import { ModeContext } from "../utils/Mode";
 import ReactDOMServer from 'react-dom/server';
 
 import { ArrowRight } from "react-bootstrap-icons";
+import { toast } from "react-toastify";
 
 let EDITOR_LIGHT_THEME = githubLight;
 let EDITOR_DARK_THEME = okaidia;
@@ -101,11 +102,24 @@ export function onCodeSelect(update, setActiveProblemsRange) {
   setActiveProblemsRange(activeRange);
 }
 
-export default function CodeMirrorWrapper({ value, onChange, problems, onProblemArrowClick, onCodeSelect }) {
-  let [mode,] = React.useContext(ModeContext);
-  const editor = React.useRef();
+export function gotoLine(view, i) {
+  let loc = undefined;
+  view.state.field(problemArrowState).between(0, view.state.doc.length, (from, _to, val) => {
+    if (val.index === i)
+      loc = from;
+  });
 
-  const { setContainer, view } = useCodeMirror({
+  if (loc)
+    view.dispatch({ selection: { anchor: loc } });
+  else
+    toast.warning(<>The line with this defect was probably removed.</>)
+}
+
+export function useCodeMirrorCustom({ value, onChange, onProblemArrowClick, onCodeSelect }) {
+  let editor = React.useRef();
+  let [mode,] = React.useContext(ModeContext);
+
+  let { view, setContainer } = useCodeMirror({
     extensions: [
       python(),
       [...problemsGutter(onProblemArrowClick)],
@@ -126,17 +140,12 @@ export default function CodeMirrorWrapper({ value, onChange, problems, onProblem
       setContainer(editor.current);
     }
 
-    // console.log(view);
-    // if (view) {
-    //   // view.dispatch({ changes: { from: 2, insert: "asdasdad" } });
-    //   // view.dispatch({ selection: { ranges: { from: 2, to: 3 } } });
-    //   console.log(state.doc.line(3));
-    //   view.dispatch({ selection: { anchor: state.doc.line(3).to } });
-
-    //   // view.dispatch({ selection: { anchor: state.doc.lineAt(2) } });
-    //   // setView(view);
-    // }
   }, [setContainer]);
+
+  return { view, editor };
+}
+
+export default function CodeMirrorWrapper({ view, editor, problems }) {
 
   React.useEffect(() => {
     if (view)

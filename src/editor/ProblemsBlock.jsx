@@ -7,7 +7,7 @@ export function toggleProblemSolved(i, solvedProblems, setSolvedProblems) {
   setSolvedProblems(solvedProblems.map((s, j) => i === j ? !s : s));
 }
 
-export default function ProblemsBlock({ status, problems, explanations, activeProblemsRange, solvedProblems, onProblemSolvedClick }) {
+export default function ProblemsBlock({ status, problems, explanations, activeProblemsRange, solvedProblems, onProblemGotoClick, onProblemSolvedClick }) {
   let content;
   switch (status) {
     case "init":
@@ -26,6 +26,7 @@ export default function ProblemsBlock({ status, problems, explanations, activePr
               explanation={explanations[problem.code]}
               active={activeProblemsRange.min <= i && i <= activeProblemsRange.max}
               solved={solvedProblems[i]}
+              onProblemGotoClick={() => onProblemGotoClick(i)}
               onProblemSolvedClick={() => onProblemSolvedClick(i)}
             />)}
           </Accordion >;

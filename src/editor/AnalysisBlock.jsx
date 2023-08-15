@@ -9,7 +9,7 @@ import CtrlShortcut from "../utils/CtrlShortcut";
 
 import { Navigate, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import { Buttons, FeedbackInfo, downloadFile, loadFile } from './AnalysisBlockElems';
-import CodeMirrorWrapper, { onCodeSelect } from './CodeBlock';
+import CodeMirrorWrapper, { useCodeMirrorCustom, onCodeSelect, gotoLine } from './CodeBlock';
 
 function fetchData(url, toastContents, errorReturn, processResult) {
   fetch(url)
@@ -84,7 +84,7 @@ function analyze(code, version, setProblems, setSolvedProblems, setStatus) {
 }
 
 export function AnalysisBlock() {
-  let { state } = useLocation();
+  let loc = useLocation();
   let navigate = useNavigate();
 
   let [problems, setProblems] = React.useState([]);
@@ -93,14 +93,22 @@ export function AnalysisBlock() {
   let [explanations, setExplanations] = React.useState({});
   let [versions, setVersions] = React.useState([]);
 
-  let [code, setCode] = React.useState(state?.code?.slice() || "");
+  let [code, setCode] = React.useState(loc.state?.code?.slice() || "");
   let [version, setVersion] = React.useState(null);
 
   let [activeProblemsRange, setActiveProblemsRange] = React.useState({ min: undefined, max: undefined });
 
+  let { view, editor } = useCodeMirrorCustom({
+    value: code,
+    onChange: setCode,
+    problems: problems,
+    onProblemArrowClick: setActiveProblemsRange,
+    onCodeSelect: update => onCodeSelect(update, setActiveProblemsRange)
+  });
+
   React.useEffect(() => {
-    if (state) {
-      state.code = undefined;
+    if (loc.state) {
+      loc.state.code = undefined;
     }
 
     fetchExplanations(setExplanations);
@@ -119,10 +127,7 @@ export function AnalysisBlock() {
           </small>
         </div>
 
-        <CodeMirrorWrapper value={code} onChange={setCode} problems={problems}
-          onProblemArrowClick={setActiveProblemsRange}
-          onCodeSelect={update => onCodeSelect(update, setActiveProblemsRange)}
-        />
+        <CodeMirrorWrapper view={view} editor={editor} problems={problems} />
 
         <Buttons status={status} versions={versions} version={version}
           onLoad={(e) => loadFile(e, setCode, setProblems, setStatus, navigate)}
@@ -133,7 +138,9 @@ export function AnalysisBlock() {
         <FeedbackInfo />
       </div>
       <ProblemsBlock status={status} problems={problems} explanations={explanations} solvedProblems={solvedProblems}
-        activeProblemsRange={activeProblemsRange} onProblemSolvedClick={i => toggleProblemSolved(i, solvedProblems, setSolvedProblems)}
+        activeProblemsRange={activeProblemsRange}
+        onProblemGotoClick={i => gotoLine(view, i)}
+        onProblemSolvedClick={i => toggleProblemSolved(i, solvedProblems, setSolvedProblems)}
       />
     </Split>
   )

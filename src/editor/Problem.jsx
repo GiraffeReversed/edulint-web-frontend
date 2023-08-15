@@ -24,7 +24,7 @@ function CollapseToggle({ eventKey, callback, hasExplanation }) {
   );
 }
 
-export default function Problem({ path, line, column, source, code, text, explanation, active, solved, onProblemSolvedClick }) {
+export default function Problem({ path, line, column, source, code, text, explanation, active, solved, onProblemGotoClick, onProblemSolvedClick }) {
   let why = explanation?.why;
   let examples = explanation?.examples;
 
@@ -32,7 +32,7 @@ export default function Problem({ path, line, column, source, code, text, explan
     <Card className={(active ? "active " : "") + "problem my-2"}>
       <Card.Header className="p-0 border-bottom-0">
         <ButtonGroup className="d-flex">
-          <Button variant="outline-warning"><Bullseye /></Button>
+          <Button variant="outline-warning" onClick={onProblemGotoClick}><Bullseye /></Button>
           <div className="p-1 small w-100">
             {line}: {text}
           </div>

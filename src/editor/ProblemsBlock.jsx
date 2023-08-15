@@ -40,8 +40,11 @@ export default function ProblemsBlock({ status, problems, explanations, activePr
   }
   return (
     <div id="problems-block" className="d-flex flex-column m-3 ms-0 mt-1">
-      <h5 className="ms-2">Problems</h5>
-      <div className="pt-1 pe-1 ps-2">
+      <div className="pe-1 ps-2">
+        <h5 className="">What to improve</h5>
+        {status == "results" && problems.length > 0 && <p style={{ fontSize: "small" }}><em>
+          Addressing these suggestions can fix some bugs and makes your code more readable.
+        </em></p>}
         <div id="problems">
           {content}
         </div>

@@ -14,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './code_highlighting.css';
 import './code_highlighting_dark.css';
 import './App.css';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, ToastContainer, Flip } from 'react-toastify';
 
 // TODO handle errors
 const router = createBrowserRouter(
@@ -52,7 +52,7 @@ function Body() {
 
   return (
     <ModeContext.Provider value={[mode, setMode]} >
-      <ToastContainer position="bottom-right" theme={mode} />
+      <ToastContainer position="bottom-right" theme={mode} transition={Flip} />
       <Navbar />
       <div className="container-lg p-0 content d-flex flex-column rounded-bottom align-items-stretch pt-2">
         <Outlet />

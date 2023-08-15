@@ -53,6 +53,7 @@ function analyze(code, version, setProblems, setActiveProblemsRange, setStatus) 
 
   setStatus("linting");
   setActiveProblemsRange({ min: undefined, max: undefined });
+  setProblems([]);
 
   fetch(`https://edulint.com/api/${version}/analyze`, {
     method: "POST",

@@ -106,3 +106,7 @@ html.dark .explCollapseButton.noExpl {
 html.dark .explCollapseButton.noExpl:hover {
   color: #626262;
 }
+
+.cm-problems-gutter svg {
+  cursor: pointer;
+}

@@ -2,10 +2,13 @@ import { Accordion, ButtonGroup, Card, Button } from "react-bootstrap"
 import React from "react";
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import { AccordionContext } from "react-bootstrap";
-import { Bullseye, Check2, ChevronDown, ChevronUp } from "react-bootstrap-icons";
+import { Bullseye, ChevronDown, ChevronUp } from "react-bootstrap-icons";
+import { ModeContext } from "../utils/Mode";
+
 
 function CollapseToggle({ eventKey, callback, hasExplanation }) {
   const { activeEventKey } = React.useContext(AccordionContext);
+  let [mode,] = React.useContext(ModeContext);
 
   const decoratedOnClick = useAccordionButton(
     eventKey,
@@ -16,7 +19,8 @@ function CollapseToggle({ eventKey, callback, hasExplanation }) {
 
   return (
     <Button
-      variant={hasExplanation ? "outline-secondary" : "outline-light"}
+      className={"explCollapseButton" + (hasExplanation ? "" : " noExpl")}
+      variant={hasExplanation ? "outline-secondary" : mode === "light" ? "outline-light" : "outline-dark"}
       onClick={decoratedOnClick}
     >
       {isCurrentEventKey ? <ChevronUp /> : <ChevronDown />}

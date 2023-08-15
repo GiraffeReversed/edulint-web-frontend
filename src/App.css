@@ -89,3 +89,20 @@ html.dark .cm-gutters {
   border-radius: 0.25rem !important;
   outline: 1px solid;
 }
+
+.explCollapseButton.noExpl,
+.explCollapseButton.noExpl:hover {
+  background-color: transparent !important;
+}
+
+html.light .explCollapseButton.noExpl:hover {
+  color: #6c757d;
+}
+
+html.dark .explCollapseButton.noExpl {
+  color: transparent;
+}
+
+html.dark .explCollapseButton.noExpl:hover {
+  color: #626262;
+}

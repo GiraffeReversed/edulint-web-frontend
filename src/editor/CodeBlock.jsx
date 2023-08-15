@@ -109,9 +109,12 @@ export function gotoLine(view, i) {
       loc = from;
   });
 
-  if (loc)
-    view.dispatch({ selection: { anchor: loc } });
-  else
+  if (loc) {
+    view.dispatch({
+      selection: { anchor: loc },
+      effects: EditorView.scrollIntoView(loc, { yMargin: 100 })
+    });
+  } else
     toast.warning(<>The line with this defect was probably removed.</>)
 }
 

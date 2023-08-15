@@ -152,5 +152,5 @@ export default function CodeMirrorWrapper({ view, editor, problems }) {
       setProblemArrows(view, problems);
   }, [view, problems]);
 
-  return <div ref={editor} className="d-flex flex-fill" />;
+  return <div id="editor-wrapper" ref={editor} className="d-flex flex-fill" />;
 }

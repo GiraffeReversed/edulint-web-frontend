@@ -83,6 +83,10 @@ html.dark .CodeMirror-scrollbar-filler {
   overflow-y: auto;
 }
 
+#editor-wrapper {
+  max-height: calc(100% - 110px);
+}
+
 .card-container {
   overflow-y: auto;
 }

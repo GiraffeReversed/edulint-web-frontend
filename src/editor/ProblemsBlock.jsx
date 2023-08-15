@@ -2,12 +2,7 @@ import { Alert } from "react-bootstrap";
 import Problem from "./Problem";
 import { Accordion } from "react-bootstrap";
 
-
-export function toggleProblemSolved(i, solvedProblems, setSolvedProblems) {
-  setSolvedProblems(solvedProblems.map((s, j) => i === j ? !s : s));
-}
-
-export default function ProblemsBlock({ status, problems, explanations, activeProblemsRange, solvedProblems, onProblemGotoClick, onProblemSolvedClick }) {
+export default function ProblemsBlock({ status, problems, explanations, activeProblemsRange, onProblemGotoClick }) {
   let content;
   switch (status) {
     case "init":
@@ -25,9 +20,7 @@ export default function ProblemsBlock({ status, problems, explanations, activePr
               {...problem}
               explanation={explanations[problem.code]}
               active={activeProblemsRange.min <= i && i <= activeProblemsRange.max}
-              solved={solvedProblems[i]}
               onProblemGotoClick={() => onProblemGotoClick(i)}
-              onProblemSolvedClick={() => onProblemSolvedClick(i)}
             />)}
           </Accordion >;
         else

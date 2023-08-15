@@ -3,9 +3,7 @@ import Split from "react-split";
 import { toast } from "react-toastify";
 import DOMPurify from "dompurify";
 
-import ProblemsBlock, { toggleProblemSolved } from "./ProblemsBlock";
-
-import CtrlShortcut from "../utils/CtrlShortcut";
+import ProblemsBlock from "./ProblemsBlock";
 
 import { Navigate, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import { Buttons, FeedbackInfo, downloadFile, loadFile } from './AnalysisBlockElems';
@@ -50,7 +48,7 @@ function fetchVersions(setVersions, setVersion) {
   );
 }
 
-function analyze(code, version, setProblems, setSolvedProblems, setActiveProblemsRange, setStatus) {
+function analyze(code, version, setProblems, setActiveProblemsRange, setStatus) {
   // plausible('check-button');
 
   setStatus("linting");
@@ -74,7 +72,6 @@ function analyze(code, version, setProblems, setSolvedProblems, setActiveProblem
     })
     .then(problems => {
       setProblems(problems);
-      setSolvedProblems(new Array(problems.length).fill(false));
       setStatus("results");
     })
     .catch(error => {
@@ -91,7 +88,6 @@ export function AnalysisBlock() {
   let navigate = useNavigate();
 
   let [problems, setProblems] = React.useState([]);
-  let [solvedProblems, setSolvedProblems] = React.useState([]);
   let [status, setStatus] = React.useState("init"); // init, linting, results or error
   let [explanations, setExplanations] = React.useState({});
   let [versions, setVersions] = React.useState([]);
@@ -125,9 +121,6 @@ export function AnalysisBlock() {
       <div id="code-block" className="d-flex flex-column ms-3 me-2 mt-1 mb-2">
         <div className="d-flex flex-row justify-content-between">
           <h5>Code</h5>
-          <small hidden={problems.length == 0}>
-            <CtrlShortcut letter="D" /> to mark current line as solved
-          </small>
         </div>
 
         <CodeMirrorWrapper view={view} editor={editor} problems={problems} />
@@ -136,14 +129,13 @@ export function AnalysisBlock() {
           onLoad={(e) => loadFile(e, setCode, setProblems, setStatus, setActiveProblemsRange, navigate)}
           onDownload={() => downloadFile(code)}
           onVersionChange={setVersion}
-          onCheck={() => analyze(code, version, setProblems, setSolvedProblems, setActiveProblemsRange, setStatus)} />
+          onCheck={() => analyze(code, version, setProblems, setActiveProblemsRange, setStatus)} />
 
         <FeedbackInfo />
       </div>
-      <ProblemsBlock status={status} problems={problems} explanations={explanations} solvedProblems={solvedProblems}
+      <ProblemsBlock status={status} problems={problems} explanations={explanations}
         activeProblemsRange={activeProblemsRange}
         onProblemGotoClick={i => gotoLine(view, i)}
-        onProblemSolvedClick={i => toggleProblemSolved(i, solvedProblems, setSolvedProblems)}
       />
     </Split>
   )

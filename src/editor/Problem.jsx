@@ -4,16 +4,12 @@ import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import { AccordionContext } from "react-bootstrap";
 import { Bullseye, ChevronDown, ChevronUp } from "react-bootstrap-icons";
 import { ModeContext } from "../utils/Mode";
+import { ProblemClickSettingsContext } from "../utils/ProblemClickSettings";
 
 
-function CollapseToggle({ eventKey, callback, hasExplanation }) {
+function CollapseToggle({ eventKey, hasExplanation, onClick }) {
   const { activeEventKey } = React.useContext(AccordionContext);
   let [mode,] = React.useContext(ModeContext);
-
-  const decoratedOnClick = useAccordionButton(
-    eventKey,
-    () => callback && callback(eventKey),
-  );
 
   const isCurrentEventKey = activeEventKey === eventKey;
 
@@ -21,7 +17,7 @@ function CollapseToggle({ eventKey, callback, hasExplanation }) {
     <Button
       className={"explCollapseButton" + (hasExplanation ? "" : " noExpl")}
       variant={hasExplanation ? "outline-secondary" : mode === "light" ? "outline-light" : "outline-dark"}
-      onClick={decoratedOnClick}
+      onClick={onClick}
     >
       {isCurrentEventKey ? <ChevronUp /> : <ChevronDown />}
     </Button>
@@ -29,6 +25,18 @@ function CollapseToggle({ eventKey, callback, hasExplanation }) {
 }
 
 export default function Problem({ path, line, column, source, code, text, explanation, active, onProblemGotoClick }) {
+  let eventKey = path + line + code;
+
+  let settings = React.useContext(ProblemClickSettingsContext);
+  let accordionOnClick = useAccordionButton(eventKey);
+  let onTextClick = () => {
+    if (settings["gotoLine"])
+      onProblemGotoClick();
+    if (settings["toggleExpls"]) {
+      accordionOnClick();
+    }
+  }
+
   let why = explanation?.why;
   let examples = explanation?.examples;
 
@@ -37,13 +45,13 @@ export default function Problem({ path, line, column, source, code, text, explan
       <Card.Header className="p-0 border-bottom-0">
         <ButtonGroup className="d-flex">
           <Button variant="outline-warning" onClick={onProblemGotoClick}><Bullseye /></Button>
-          <div className="p-1 small w-100">
+          <div className={"p-1 small w-100" + (Object.values(settings).some(v => v) ? " clickable" : "")} onClick={onTextClick}>
             {line}: {text}
           </div>
-          <CollapseToggle eventKey={path + line + code} hasExplanation={explanation !== undefined} />
+          <CollapseToggle eventKey={eventKey} hasExplanation={explanation !== undefined} onClick={accordionOnClick} />
         </ButtonGroup>
       </Card.Header>
-      <Accordion.Collapse eventKey={path + line + code}>
+      <Accordion.Collapse eventKey={eventKey}>
         <Card.Body className="small border-top">
           {why && <>
             <h6>Why is it a problem?</h6>

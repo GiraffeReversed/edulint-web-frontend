@@ -4,9 +4,9 @@ import { SunFill, MoonFill, GearFill } from "react-bootstrap-icons";
 import { Navbar as NB, Nav, Container } from "react-bootstrap";
 import { ModeContext, toggleDarkmode } from "./utils/Mode"
 
-export default function Navbar(props) {
+export default function Navbar({ mode, onSettingsClick }) {
   let [current, setMode] = React.useContext(ModeContext);
-  const modeSymbol = props.mode === "dark" ? <SunFill /> : <MoonFill />;
+  const modeSymbol = mode === "dark" ? <SunFill /> : <MoonFill />;
 
   return (
     <NB bg="light">
@@ -20,7 +20,7 @@ export default function Navbar(props) {
         </Nav>
         <Nav>
           <Nav.Link onClick={() => toggleDarkmode(current, setMode)}>{modeSymbol}</Nav.Link>
-          <Nav.Link><GearFill /></Nav.Link>
+          <Nav.Link><GearFill onClick={onSettingsClick} /></Nav.Link>
         </Nav>
       </Container>
     </NB >

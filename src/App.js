@@ -3,6 +3,7 @@ import { Outlet, createBrowserRouter, RouterProvider, redirect } from "react-rou
 
 import Navbar from './Navbar';
 import { ModeContext, getMode, setModeToUI } from './utils/Mode';
+import { SettingsModal } from './utils/SettingsModal';
 import { AnalysisBlock, AnalysisBlockCodeRedirector } from './editor/AnalysisBlock';
 import About from './About';
 import FAQ from './FAQ';
@@ -15,6 +16,7 @@ import './code_highlighting.css';
 import './code_highlighting_dark.css';
 import './App.css';
 import { toast, ToastContainer, Flip } from 'react-toastify';
+import { ProblemClickSettingsContext, getProblemClickSettings, permasetProblemClickSettings } from './utils/ProblemClickSettings';
 
 // TODO handle errors
 const router = createBrowserRouter(
@@ -48,15 +50,25 @@ const router = createBrowserRouter(
 
 function Body() {
   let [mode, setMode] = React.useState(getMode());
+  let [problemClickSettings, setProblemClickSettings] = React.useState(getProblemClickSettings(["gotoLine", "toggleExpls"]));
+  let [showSettings, setShowSettings] = React.useState(false);
   setModeToUI(mode);
 
   return (
     <ModeContext.Provider value={[mode, setMode]} >
-      <ToastContainer position="bottom-right" theme={mode} transition={Flip} />
-      <Navbar />
-      <div className="container-lg p-0 content d-flex flex-column rounded-bottom align-items-stretch pt-2">
-        <Outlet />
-      </div>
+      <ProblemClickSettingsContext.Provider value={problemClickSettings} >
+        <ToastContainer position="bottom-right" theme={mode} transition={Flip} />
+        <SettingsModal
+          show={showSettings}
+          onHide={() => setShowSettings(false)}
+          settings={problemClickSettings}
+          onSettingSet={label => e => { let copy = { ...problemClickSettings }; copy[label] = e.target.checked; permasetProblemClickSettings(copy, setProblemClickSettings) }}
+        />
+        <Navbar onSettingsClick={() => setShowSettings(true)} />
+        <div className="container-lg p-0 content d-flex flex-column rounded-bottom align-items-stretch pt-2">
+          <Outlet />
+        </div>
+      </ProblemClickSettingsContext.Provider>
     </ModeContext.Provider>
   );
 }

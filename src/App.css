@@ -15,8 +15,6 @@ html.dark {
 
 body {
   background-color: #d1d1d1;
-  /* background-image: url("black-thread.png"); */
-  background-size: max(4%, 49px) auto;
 }
 
 html.dark body {
@@ -41,38 +39,10 @@ html.dark .content {
   background-color: #151515e6;
 }
 
-.gutter {
-  background-color: #eee;
-  background-repeat: no-repeat;
-  background-position: 50%;
-  margin-bottom: 1em;
-}
-
-.gutter.gutter-horizontal {
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
-  cursor: col-resize;
-}
-
-html.dark .gutter.gutter-horizontal {
-  filter: brightness(0.28);
-}
-
 .cm-editor {
   font-size: 0.815rem !important;
   flex-grow: 1;
   border-radius: 0.3rem;
-}
-
-html.dark .CodeMirror {
-  background-color: #1f1f1f;
-}
-
-html.dark .CodeMirror-gutters {
-  background-color: #1f1f1f;
-}
-
-html.dark .CodeMirror-scrollbar-filler {
-  background-color: #1f1f1f;
 }
 
 #analysis-block {

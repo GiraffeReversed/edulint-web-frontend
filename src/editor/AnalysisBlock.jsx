@@ -50,8 +50,11 @@ function fetchVersions(setVersions, setVersion) {
   );
 }
 
-function analyze(code, version, setProblems, setSolvedProblems, setStatus) {
+function analyze(code, version, setProblems, setSolvedProblems, setActiveProblemsRange, setStatus) {
   // plausible('check-button');
+
+  setStatus("linting");
+  setActiveProblemsRange({ min: undefined, max: undefined });
 
   fetch(`https://edulint.com/api/${version}/analyze`, {
     method: "POST",
@@ -130,10 +133,10 @@ export function AnalysisBlock() {
         <CodeMirrorWrapper view={view} editor={editor} problems={problems} />
 
         <Buttons status={status} versions={versions} version={version}
-          onLoad={(e) => loadFile(e, setCode, setProblems, setStatus, navigate)}
+          onLoad={(e) => loadFile(e, setCode, setProblems, setStatus, setActiveProblemsRange, navigate)}
           onDownload={() => downloadFile(code)}
           onVersionChange={setVersion}
-          onCheck={() => { analyze(code, version, setProblems, setSolvedProblems, setStatus); setStatus("linting"); }} />
+          onCheck={() => analyze(code, version, setProblems, setSolvedProblems, setActiveProblemsRange, setStatus)} />
 
         <FeedbackInfo />
       </div>

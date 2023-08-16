@@ -48,12 +48,13 @@ function fetchVersions(setVersions, setVersion) {
   );
 }
 
-function analyze(code, version, setProblems, setActiveProblemsRange, setStatus) {
+function analyze(code, version, setProblems, setConfigErrors, setErrorCode, setActiveProblemsRange, setStatus) {
   // plausible('check-button');  TODO: https://github.com/GiraffeReversed/edulint-web/commit/725fba5212754a12523e70b4eb0dfb9547f6a65e
 
   setStatus("linting");
   setActiveProblemsRange({ min: undefined, max: undefined });
   setProblems([]);
+  setConfigErrors([]);
 
   fetch(`https://edulint.com/api/${version}/analyze`, {
     method: "POST",
@@ -71,13 +72,15 @@ function analyze(code, version, setProblems, setActiveProblemsRange, setStatus) 
       }
       return response.json() // .json() for Objects vs text() for raw
     })
-    .then(problems => {
-      setProblems(problems);
+    .then(result => {
+      setProblems(result.problems);
+      setConfigErrors(result.config_errors);
       setStatus("results");
     })
     .catch(error => {
       if (error?.name === "errorNot200") {
         setStatus("error");
+        setErrorCode(error.status);
       } else {
         throw error;
       }
@@ -89,7 +92,9 @@ export function AnalysisBlock() {
   let navigate = useNavigate();
 
   let [problems, setProblems] = React.useState([]);
+  let [configErrors, setConfigErrors] = React.useState([]);
   let [status, setStatus] = React.useState("init"); // init, linting, results or error
+  let [errorCode, setErrorCode] = React.useState(200);
   let [explanations, setExplanations] = React.useState({});
   let [versions, setVersions] = React.useState([]);
 
@@ -127,16 +132,16 @@ export function AnalysisBlock() {
         <CodeMirrorWrapper view={view} editor={editor} problems={problems} />
 
         <Buttons status={status} versions={versions} version={version}
-          onLoad={(e) => loadFile(e, setCode, setProblems, setStatus, setActiveProblemsRange, navigate)}
+          onLoad={(e) => loadFile(e, setCode, setProblems, setConfigErrors, setStatus, setActiveProblemsRange, navigate)}
           onDownload={() => downloadFile(code)}
           onVersionChange={setVersion}
-          onCheck={() => analyze(code, version, setProblems, setActiveProblemsRange, setStatus)} />
+          onCheck={() => analyze(code, version, setProblems, setConfigErrors, setErrorCode, setActiveProblemsRange, setStatus)} />
 
         <FeedbackInfo />
       </div>
       <ProblemsBlock status={status} problems={problems} explanations={explanations}
-        activeProblemsRange={activeProblemsRange}
-        onProblemGotoClick={i => gotoLine(view, i)}
+        activeProblemsRange={activeProblemsRange} configErrors={configErrors}
+        onProblemGotoClick={i => gotoLine(view, i)} errorCode={errorCode}
       />
     </Split>
   )

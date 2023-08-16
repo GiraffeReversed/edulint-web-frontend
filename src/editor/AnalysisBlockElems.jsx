@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { SecondaryLink as A } from "../utils/SecondaryLink";
 import fileDownload from "js-file-download";
 
-export function loadFile(e, setCode, setProblems, setStatus, setActiveProblemsRange, navigate) {
+export function loadFile(e, setCode, setProblems, setConfigErrors, setStatus, setActiveProblemsRange, navigate) {
   let file = e.target.files[0];
   if (!file || !file.name.endsWith(".py")) {
     toast.warning(<>Select a <code>.py</code> file.</>)
@@ -12,7 +12,7 @@ export function loadFile(e, setCode, setProblems, setStatus, setActiveProblemsRa
   }
 
   let reader = new FileReader();
-  reader.onload = () => { setCode(reader.result); setProblems([]); };
+  reader.onload = () => { setCode(reader.result); setProblems([]); setConfigErrors([]); };
   reader.readAsText(file);
 
   setStatus("init");
@@ -59,8 +59,22 @@ export function Buttons({ status, versions, version, onLoad, onDownload, onVersi
 }
 
 export function FeedbackInfo() {
-  return (<p className="text-muted small mb-0 text-center">Problems? Thoughts? Improvement suggestions? <A
-    href="https://docs.google.com/forms/d/e/1FAIpQLSfiQDmLX_KdOdoGJKC8qhNfYNG6O7sNiNk-x7as7H02DI7XhQ/viewform">
-    Let me know.</A>
-  </p>);
+  return (
+    <p className="text-muted small mb-0 text-center">
+      Problems? Thoughts? Improvement suggestions? <FeedbackLink variant="secondary">Let me know.</FeedbackLink>
+    </p>
+  );
+}
+
+export function FeedbackLink({ variant, children }) {
+  return (
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href="https://docs.google.com/forms/d/e/1FAIpQLSfiQDmLX_KdOdoGJKC8qhNfYNG6O7sNiNk-x7as7H02DI7XhQ/viewform"
+      className={"link-" + variant}
+    >
+      {children}
+    </a>
+  );
 }

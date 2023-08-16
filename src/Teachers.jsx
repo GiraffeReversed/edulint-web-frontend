@@ -33,7 +33,7 @@ export default function Teachers() {
       <section id="teachers-inputs">
         <DescCard>
           <h5>Are there some interesting inputs I might try the tool on?</h5>
-          <p>Yes. At the present moment, <Link to={`/editor/editor_example_umime`}>this code</Link> showcases
+          <p>Yes. At the present moment, <Link to={`/editor/editor_example_umime`}>this code</Link> showcases {/* TODO: THIS LINK DOESN'T WORK https://github.com/GiraffeReversed/edulint-web/commit/cc7bcb0034d020207aff0150151f86010d31615a */}
             most of the tool's abilities.</p>
 
         </DescCard>

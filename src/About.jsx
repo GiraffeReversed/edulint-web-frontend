@@ -19,7 +19,7 @@ export default function About() {
       <DescCard>
         <h5>Behind the page</h5>
         <p>
-          The backend is powered by <A href="flask.palletsprojects.com">Flask</A>.
+          The backend is powered by <A href="https://flask.palletsprojects.com">Flask</A>.
           The frontend is designed using <A href="https://getbootstrap.com/">Bootstrap</A>,
           with <A href="https://vinorodrigues.github.io/bootstrap-dark-5/"> bootstrap-dark-5</A> for the dark mode.
           The icons are <A href="https://icons.getbootstrap.com/">the Bootstrap Icons</A>.
@@ -39,8 +39,8 @@ export default function About() {
           href="https://github.com/GiraffeReversed/edulint">Linter's GitHub</A> <Github className="" />. <A
             href="https://github.com/GiraffeReversed/edulint-web">Web's GitHub</A> <Github />.
         </p>
-        <p>The development of this project is supported by <A
-          href="https://research.redhat.com/blog/research_project/adaptive-learning-of-programming/">RedHat Research</A>.
+        <p>The development of this project was sponsored by <A
+          href="https://research.redhat.com/events/europe-rig-meeting-december-2022/">RedHat Research</A> during 2022 and first half of 2023..
         </p>
       </DescCard>
     </DescContainer>

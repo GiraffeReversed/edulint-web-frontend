@@ -1,3 +1,6 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /editor
+Allow: /about
+Allow: /faq
+Allow: /teachers
+Disallow: /editor/code

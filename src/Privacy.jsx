@@ -45,8 +45,8 @@ export default function Privacy() {
             therefore need to provide the list of SHA-256 hashes. To exercise these rights or to send inquires,
             contact us at anna.rechtackova@mail.muni.cz.</p>
 
-          <p>This version of the privacy policy was published on 2022-11-15 and relates only to
-            service provided on <A href="https://edulint.rechtackova.cz/">edulint.rechtackova.cz</A></p>
+          <p>This version of the privacy policy was published on 2023-08-15 and relates to
+            service provided on <A href="https://edulint.com/">edulint.com</A></p>
         </DescCard>
       </section>
     </DescContainer>

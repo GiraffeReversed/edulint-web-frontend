@@ -1,0 +1,14 @@
+version: '3.5'
+
+services:
+  ui:
+    image: edulint-web-frontend:latest
+    build: .  
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: dockerInternal

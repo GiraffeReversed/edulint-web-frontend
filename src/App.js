@@ -32,7 +32,7 @@ const router = createBrowserRouter(
             path: "editor/:name",
             element: <AnalysisBlockCodeRedirector />,
             loader: async ({ params }) => {
-              const res = await fetch("https://edulint.rechtackova.cz/api/code/" + params.name);
+              const res = await fetch("https://edulint.com/api/code/" + params.name);
 
               if (res.status === 404) {
                 toast.info(<>No such file as <code>{params.name}</code> was uploaded.</>);

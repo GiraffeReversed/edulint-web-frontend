@@ -3,7 +3,7 @@ name: Docker build, publish and deploy
 on:
   push:
     branches:
-      - master
+      - main
       - dev
 
   workflow_dispatch:
@@ -14,9 +14,9 @@ on:
         default: 'latest'
 
 env:
-  docker_label: "${{ inputs.docker_label || github.ref == 'refs/heads/master' && 'latest' || 'dev' }}"
-  TARGET_FOLDER: "${{ github.ref == 'refs/heads/master' && secrets.SSH_PROD_FOLDER || secrets.SSH_DEV_FOLDER }}"
-
+  docker_label: "${{ inputs.docker_label || github.ref == 'refs/heads/main' && 'latest' || 'dev' }}"
+  TARGET_FOLDER: "${{ github.ref == 'refs/heads/main' && secrets.SSH_PROD_FOLDER || secrets.SSH_DEV_FOLDER }}"
+  edulint_web_ref: "${{ github.ref == 'refs/heads/main' && 'main' || 'dev' }}"
 
 jobs:
   docker-build-and-publish-image:

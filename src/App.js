@@ -9,6 +9,7 @@ import About from './About';
 import FAQ from './FAQ';
 import Teachers from './Teachers';
 import Privacy from './Privacy';
+import Error from './Error';
 
 import 'bootstrap-dark-5/dist/css/bootstrap-nightshade.min.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,32 +19,35 @@ import './App.css';
 import { toast, ToastContainer, Flip } from 'react-toastify';
 import { ProblemClickSettingsContext, getProblemClickSettings, permasetProblemClickSettings } from './utils/ProblemClickSettings';
 
-// TODO handle errors
 const router = createBrowserRouter(
   [
     {
       path: "/", element: <Body />,
-      children: [
-        { index: true, element: <AnalysisBlock /> },
-        { path: "editor", element: <AnalysisBlock /> },
-        {
-          path: "editor/:name",
-          element: <AnalysisBlockCodeRedirector />,
-          loader: async ({ params }) => {
-            const res = await fetch("https://edulint.rechtackova.cz/api/code/" + params.name);
+      children: [{
+        errorElement: <Error />,
+        children: [
+          { index: true, element: <AnalysisBlock /> },
+          { path: "editor", element: <AnalysisBlock /> },
+          {
+            path: "editor/:name",
+            element: <AnalysisBlockCodeRedirector />,
+            loader: async ({ params }) => {
+              const res = await fetch("https://edulint.rechtackova.cz/api/code/" + params.name);
 
-            if (res.status === 404) {
-              toast.info(<>No such file as <code>{params.name}</code> was uploaded.</>);
-              return redirect("/editor");
-            }
-            return res;
+              if (res.status === 404) {
+                toast.info(<>No such file as <code>{params.name}</code> was uploaded.</>);
+                return redirect("/editor");
+              }
+              return res;
+            },
           },
-        },
-        { path: "about", element: <About /> },
-        { path: "faq", element: <FAQ /> },
-        { path: "teachers", element: <Teachers /> },
-        { path: "privacy", element: <Privacy /> },
-      ]
+          { path: "about", element: <About /> },
+          { path: "faq", element: <FAQ /> },
+          { path: "teachers", element: <Teachers /> },
+          { path: "privacy", element: <Privacy /> },
+          { path: "*", element: <Error status={404} /> }
+        ]
+      }]
     }
   ]
 );

@@ -27,6 +27,7 @@ export default function ConfigErrors({ configErrors }) {
         <ListGroup>
           <ListGroup.Item>EduLint configuration errors</ListGroup.Item>
           {configErrors.map((error, i) => <ConfigError message={error.message} level={error.level} key={i} />)}
+          <ListGroup.Item><small>Did you misspell or change some option?</small></ListGroup.Item>
         </ListGroup>
       </Card>
     </>

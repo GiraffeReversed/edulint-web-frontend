@@ -22,7 +22,7 @@ function fetchData(url, toastContents, errorReturn, processResult) {
 
 function fetchExplanations(setExplanations) {
   fetchData(
-    "https://edulint.com/api/explanations",
+    "/api/explanations",
     <>Failed to fetch explanations. Please retry later.</>,
     {},
     (data) => {
@@ -38,7 +38,7 @@ function fetchExplanations(setExplanations) {
 
 function fetchVersions(setVersions, setVersion) {
   fetchData(
-    "https://edulint.com/api/versions",
+    "/api/versions",
     <>Failed to fetch available versions. Please retry later.</>,
     [],
     (versions) => {
@@ -56,7 +56,7 @@ function analyze(code, version, setProblems, setConfigErrors, setErrorCode, setA
   setProblems([]);
   setConfigErrors([]);
 
-  fetch(`https://edulint.com/api/${version}/analyze`, {
+  fetch(`/api/${version}/analyze`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

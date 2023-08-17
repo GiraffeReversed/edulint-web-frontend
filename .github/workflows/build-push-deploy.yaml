@@ -15,8 +15,6 @@ on:
 
 env:
   docker_label: "${{ inputs.docker_label || github.ref == 'refs/heads/main' && 'latest' || 'dev' }}"
-  TARGET_FOLDER: "${{ github.ref == 'refs/heads/main' && secrets.SSH_PROD_FOLDER || secrets.SSH_DEV_FOLDER }}"
-  edulint_web_ref: "${{ github.ref == 'refs/heads/main' && 'main' || 'dev' }}"
 
 jobs:
   docker-build-and-publish-image:
@@ -42,19 +40,14 @@ jobs:
           push: true
           tags: edulint/edulint-web-frontend:${{ env.docker_label }}
 
-  deploy:
+  redeploy-full-stack:
+    uses: GiraffeReversed/edulint-web/.github/workflows/deploy.yaml@dev
     needs: docker-build-and-publish-image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Commands over SSH
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host:     ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key:      ${{ secrets.SSH_KEY }}
-          script_stop: true
-          script: |
-            cd ${{ env.TARGET_FOLDER }}
-            docker-compose pull
-            docker-compose up -d --build
-            echo "Successfully deployed, hooray!"
+    secrets:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SSH_PROD_FOLDER: ${{ secrets.SSH_PROD_FOLDER}}
+      SSH_DEV_FOLDER: ${{ secrets.SSH_DEV_FOLDER}}
+    with:
+      BRANCH: ${{ github.ref_name }}

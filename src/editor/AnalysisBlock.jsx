@@ -98,7 +98,7 @@ export function AnalysisBlock() {
   let [explanations, setExplanations] = React.useState({});
   let [versions, setVersions] = React.useState([]);
 
-  let [code, setCode] = React.useState(loc.state?.code?.slice() || "");
+  let [code, setCode] = React.useState(loc.state?.code?.slice() || window.localStorage.getItem("edulintCode") || "");
   let [version, setVersion] = React.useState(null);
 
   let [activeProblemsRange, setActiveProblemsRange] = React.useState({ min: undefined, max: undefined });
@@ -119,6 +119,10 @@ export function AnalysisBlock() {
     fetchExplanations(setExplanations);
     fetchVersions(setVersions, setVersion);
   }, []);
+
+  React.useEffect(() => {
+    window.localStorage.setItem("edulintCode", code);
+  }, [code]);
 
   return (
     <Split className="d-flex flex-row flex-fill" id="analysis-block"

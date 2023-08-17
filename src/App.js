@@ -5,11 +5,11 @@ import Navbar from './Navbar';
 import { ModeContext, getMode, setModeToUI } from './utils/Mode';
 import { SettingsModal } from './utils/SettingsModal';
 import { AnalysisBlock, AnalysisBlockCodeRedirector } from './editor/AnalysisBlock';
-import About from './About';
-import FAQ from './FAQ';
-import Teachers from './Teachers';
-import Privacy from './Privacy';
-import Error from './Error';
+import About from './pages/About';
+import FAQ from './pages/FAQ';
+import Teachers from './pages/Teachers';
+import Privacy from './pages/Privacy';
+import Error from './pages/Error';
 
 import 'bootstrap-dark-5/dist/css/bootstrap-nightshade.min.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -79,9 +79,7 @@ function Body() {
 
 function App() {
   return (
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
+    <RouterProvider router={router} />
   )
 }
 

@@ -1,6 +1,6 @@
-import { DescCard } from "./utils/DescCard";
-import DescContainer from "./utils/DescContainer";
-import { SecondaryLink as A } from "./utils/SecondaryLink";
+import { DescCard } from "../utils/DescCard";
+import DescContainer from "../utils/DescContainer";
+import { SecondaryLink as A } from "../utils/SecondaryLink";
 import { Link } from "react-router-dom";
 
 export default function Teachers() {

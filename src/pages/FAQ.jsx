@@ -1,7 +1,7 @@
-import { DescCard } from "./utils/DescCard";
-import DescContainer from "./utils/DescContainer";
+import { DescCard } from "../utils/DescCard";
+import DescContainer from "../utils/DescContainer";
 import { Link } from "react-router-dom";
-import CtrlShortcut from "./utils/CtrlShortcut";
+import CtrlShortcut from "../utils/CtrlShortcut";
 
 export default function FAQ() {
   return (

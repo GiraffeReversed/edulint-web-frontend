@@ -1,6 +1,6 @@
-import { FeedbackLink } from "./editor/AnalysisBlockElems";
-import { DescCard } from "./utils/DescCard";
-import DescContainer from "./utils/DescContainer";
+import { FeedbackLink } from "../editor/AnalysisBlockElems";
+import { DescCard } from "../utils/DescCard";
+import DescContainer from "../utils/DescContainer";
 
 export default function Error({ status }) {
   return (

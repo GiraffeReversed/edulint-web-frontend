@@ -40,6 +40,9 @@ jobs:
           push: true
           tags: edulint/edulint-web-frontend:${{ env.docker_label }}
 
+      - name: Sleep to let DockerHub cache expire
+        run: sleep 10
+
   redeploy-full-stack:
     uses: GiraffeReversed/edulint-web/.github/workflows/deploy.yaml@dev
     needs: docker-build-and-publish-image

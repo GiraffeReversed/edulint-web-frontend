@@ -49,7 +49,7 @@ function fetchVersions(setVersions, setVersion) {
 }
 
 function analyze(code, version, setProblems, setConfigErrors, setErrorCode, setActiveProblemsRange, setStatus) {
-  // plausible('check-button');  TODO: https://github.com/GiraffeReversed/edulint-web/commit/725fba5212754a12523e70b4eb0dfb9547f6a65e
+  window.plausible('check-button');
 
   setStatus("linting");
   setActiveProblemsRange({ min: undefined, max: undefined });

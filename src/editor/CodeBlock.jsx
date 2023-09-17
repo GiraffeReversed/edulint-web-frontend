@@ -1,9 +1,9 @@
 import React from "react";
 import { useCodeMirror } from "@uiw/react-codemirror";
 import { python } from '@codemirror/lang-python';
-import { gutter, GutterMarker, keymap } from "@codemirror/view";
+import { gutter, GutterMarker, keymap, EditorView } from "@codemirror/view";
 import { StateField, StateEffect, RangeSet } from "@codemirror/state";
-import { EditorView } from "@codemirror/view";
+import { indentUnit } from "@codemirror/language";
 
 import { okaidia } from "@uiw/codemirror-theme-okaidia";
 import { githubLight } from "@uiw/codemirror-theme-github";
@@ -131,6 +131,7 @@ export function useCodeMirrorCustom({ value, onChange, onProblemArrowClick, onCo
   let { view, setContainer } = useCodeMirror({
     extensions: [
       python(),
+      indentUnit.of("    "),
       [...problemsGutter(onProblemArrowClick)],
       EditorView.updateListener.of(update => {
         if (update.selectionSet)

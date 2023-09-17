@@ -29,9 +29,10 @@ export default function About() {
           The analysis uses <A href="https://flake8.pycqa.org/">flake8</A> and <A href="https://pylint.org/">pylint</A>,
           wrapped by <A href="https://edulint.rtfd.io">EduLint</A>.
         </p>
-        <p>This page was built by <A href="https://github.com/GiraffeReversed">Anna Řechtáčková</A>. <A
-          href="https://github.com/GiraffeReversed/edulint">Linter's GitHub</A> <Github className="" />. <A
-            href="https://github.com/GiraffeReversed/edulint-web">Web's GitHub</A> <Github />.
+        <p>This page was built by <A href="https://github.com/GiraffeReversed">Anna Řechtáčková</A>.
+          <A href="https://github.com/GiraffeReversed/edulint">Linter's GitHub</A> <Github className="" />.
+          <A href="https://github.com/GiraffeReversed/edulint-web">API's GitHub</A> <Github />.
+          <A href="https://github.com/GiraffeReversed/edulint-web-frontend">Web's GitHub</A> <Github />.
         </p>
         <p>The development of this project was supported by <A
           href="https://research.redhat.com/events/europe-rig-meeting-december-2022/">RedHat Research</A> from January 2022 to June 2023.

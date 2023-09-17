@@ -143,6 +143,7 @@ export function AnalysisBlock() {
       <ProblemsBlock status={status} problems={problems} explanations={explanations}
         activeProblemsRange={activeProblemsRange} configErrors={configErrors}
         onProblemGotoClick={i => gotoLine(view, i)} errorCode={errorCode}
+        version={version}
       />
     </Split>
   )

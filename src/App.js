@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 import { ModeContext, getMode, setModeToUI } from './utils/Mode';
 import { SettingsModal } from './utils/SettingsModal';
 import { AnalysisBlock, AnalysisBlockCodeRedirector } from './editor/AnalysisBlock';
-import { FeedbackInfo } from './editor/AnalysisBlockElems';
+import { FeedbackInfo, PrivacyPolicyInfo } from './editor/AnalysisBlockElems';
 import About from './pages/About';
 import FAQ from './pages/FAQ';
 import Teachers from './pages/Teachers';
@@ -25,6 +25,7 @@ function AnalysisFooter() {
   return (
     <div className="d-flex justify-content-evenly m-2">
       <FeedbackInfo />
+      <PrivacyPolicyInfo />
     </div>
   );
 }

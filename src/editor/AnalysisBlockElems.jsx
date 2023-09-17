@@ -59,6 +59,12 @@ export function FeedbackInfo() {
   );
 }
 
+export function PrivacyPolicyInfo() {
+  return (
+    <p className="text-muted small mb-0">By submitting code you accept the <SecondaryLink href="/privacy">privacy policy</SecondaryLink>.</p>
+  );
+}
+
 export function FeedbackLink({ variant, children }) {
   return (
     <a

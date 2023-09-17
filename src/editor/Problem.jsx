@@ -24,7 +24,7 @@ function CollapseToggle({ eventKey, hasExplanation, onClick }) {
   );
 }
 
-export default function Problem({ path, line, enabled_by, source, code, text, explanation, active, onProblemGotoClick, version }) {
+export default function Problem({ path, line, enabled_by, source, code, text, explanation, active, onProblemGotoClick }) {
   let eventKey = path + line + code;
 
   let settings = React.useContext(ProblemClickSettingsContext);
@@ -63,7 +63,7 @@ export default function Problem({ path, line, enabled_by, source, code, text, ex
             <div dangerouslySetInnerHTML={{ __html: examples }} />
             <hr className="my-2" /></>}
           <p className="text-muted tiny-text mb-0">
-            <span className="fw-bold">Debug</span> v{version} {source} {line} {code}
+            <span className="fw-bold">Debug</span> {source} {line} {code}
             <span className="text-break"> {path.replace(/\.py$/, "").replace(/^[a-z]*\//, "")}</span>
           </p>
         </Card.Body>

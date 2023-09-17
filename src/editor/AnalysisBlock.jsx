@@ -47,8 +47,9 @@ function fetchVersions(setVersions, setVersion) {
   );
 }
 
-function analyze(code, version, setProblems, setConfigErrors, setErrorCode, setActiveProblemsRange, setStatus) {
+function analyze(code, setProblems, setConfigErrors, setErrorCode, setActiveProblemsRange, setStatus) {
   window.plausible('check-button');
+  let version = "latest";
 
   setStatus("linting");
   setActiveProblemsRange({ min: undefined, max: undefined });
@@ -97,7 +98,6 @@ export function AnalysisBlock() {
   let [explanations, setExplanations] = React.useState({});
 
   let [code, setCode] = React.useState(loc.state?.code?.slice() || window.localStorage.getItem("edulintCode") || "");
-  let [version, setVersion] = React.useState(null);
 
   let [activeProblemsRange, setActiveProblemsRange] = React.useState({ min: undefined, max: undefined });
 
@@ -115,7 +115,6 @@ export function AnalysisBlock() {
     }
 
     fetchExplanations(setExplanations);
-    fetchVersions(setVersion);
   }, []);
 
   React.useEffect(() => {
@@ -136,12 +135,11 @@ export function AnalysisBlock() {
         <Buttons status={status}
           onLoad={(e) => loadFile(e, setCode, setProblems, setConfigErrors, setStatus, setActiveProblemsRange, navigate)}
           onDownload={() => downloadFile(code)}
-          onCheck={() => analyze(code, version, setProblems, setConfigErrors, setErrorCode, setActiveProblemsRange, setStatus)} />
+          onCheck={() => analyze(code, setProblems, setConfigErrors, setErrorCode, setActiveProblemsRange, setStatus)} />
       </div>
       <ProblemsBlock status={status} problems={problems} explanations={explanations}
         activeProblemsRange={activeProblemsRange} configErrors={configErrors}
         onProblemGotoClick={i => gotoLine(view, i)} errorCode={errorCode}
-        version={version}
       />
     </Split>
   )

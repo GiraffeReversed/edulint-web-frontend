@@ -16,7 +16,7 @@ function errorCodeToMessage(errorCode) {
   }
 }
 
-export default function ProblemsBlock({ status, problems, configErrors, errorCode, explanations, activeProblemsRange, onProblemGotoClick, version }) {
+export default function ProblemsBlock({ status, problems, configErrors, errorCode, explanations, activeProblemsRange, onProblemGotoClick }) {
   let content;
   switch (status) {
     case "init":
@@ -41,7 +41,6 @@ export default function ProblemsBlock({ status, problems, configErrors, errorCod
                   explanation={explanations[problem.code]}
                   active={activeProblemsRange.min <= i && i <= activeProblemsRange.max}
                   onProblemGotoClick={() => onProblemGotoClick(i)}
-                  version={version}
                 />)}
               </Accordion >
             </>

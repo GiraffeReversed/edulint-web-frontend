@@ -6,7 +6,7 @@ import DOMPurify from "dompurify";
 import ProblemsBlock from "./ProblemsBlock";
 
 import { Navigate, useLoaderData, useLocation, useNavigate } from "react-router-dom";
-import { Buttons, FeedbackInfo, downloadFile, loadFile } from './AnalysisBlockElems';
+import { Buttons, downloadFile, loadFile } from './AnalysisBlockElems';
 import CodeMirrorWrapper, { useCodeMirrorCustom, onCodeSelect, gotoLine } from './CodeBlock';
 
 function fetchData(url, toastContents, errorReturn, processResult) {
@@ -126,7 +126,7 @@ export function AnalysisBlock() {
     <Split className="d-flex flex-row flex-fill" id="analysis-block"
       minSize={250} snapOffset={0} sizes={[60, 40]}
     >
-      <div id="code-block" className="d-flex flex-column ms-3 me-2 mt-1 mb-2">
+      <div id="code-block" className="d-flex flex-column ms-3 me-2 mt-1 mb-0">
         <div className="d-flex flex-row justify-content-between">
           <h5>Code</h5>
         </div>
@@ -137,8 +137,6 @@ export function AnalysisBlock() {
           onLoad={(e) => loadFile(e, setCode, setProblems, setConfigErrors, setStatus, setActiveProblemsRange, navigate)}
           onDownload={() => downloadFile(code)}
           onCheck={() => analyze(code, version, setProblems, setConfigErrors, setErrorCode, setActiveProblemsRange, setStatus)} />
-
-        <FeedbackInfo />
       </div>
       <ProblemsBlock status={status} problems={problems} explanations={explanations}
         activeProblemsRange={activeProblemsRange} configErrors={configErrors}

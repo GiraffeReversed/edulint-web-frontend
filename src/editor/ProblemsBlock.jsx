@@ -61,7 +61,7 @@ export default function ProblemsBlock({ status, problems, configErrors, errorCod
       }
   }
   return (
-    <div id="problems-block" className="d-flex flex-column m-3 ms-0 mt-1">
+    <div id="problems-block" className="d-flex flex-column m-3 ms-0 mt-1 mb-0">
       <div className="pe-1 ps-2">
         <h5 className="">What to improve</h5>
         <div id="problems">

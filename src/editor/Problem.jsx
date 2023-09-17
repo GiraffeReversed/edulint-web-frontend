@@ -24,7 +24,7 @@ function CollapseToggle({ eventKey, hasExplanation, onClick }) {
   );
 }
 
-export default function Problem({ path, line, column, source, code, text, explanation, active, onProblemGotoClick, version }) {
+export default function Problem({ path, line, enabled_by, source, code, text, explanation, active, onProblemGotoClick, version }) {
   let eventKey = path + line + code;
 
   let settings = React.useContext(ProblemClickSettingsContext);
@@ -46,7 +46,7 @@ export default function Problem({ path, line, column, source, code, text, explan
         <ButtonGroup className="d-flex">
           <Button variant="outline-warning" onClick={onProblemGotoClick}><Bullseye /></Button>
           <div className={"p-1 small w-100" + (Object.values(settings).some(v => v) ? " clickable" : "")} onClick={onTextClick}>
-            {line}: {text}
+            {line}: [{enabled_by}] {text}
           </div>
           <CollapseToggle eventKey={eventKey} hasExplanation={explanation !== undefined} onClick={accordionOnClick} />
         </ButtonGroup>

@@ -42,7 +42,6 @@ function fetchVersions(setVersions, setVersion) {
     <>Failed to fetch available versions. Please retry later.</>,
     [],
     (versions) => {
-      setVersions(versions);
       setVersion(versions[0]);
     }
   );
@@ -96,7 +95,6 @@ export function AnalysisBlock() {
   let [status, setStatus] = React.useState("init"); // init, linting, results or error
   let [errorCode, setErrorCode] = React.useState(200);
   let [explanations, setExplanations] = React.useState({});
-  let [versions, setVersions] = React.useState([]);
 
   let [code, setCode] = React.useState(loc.state?.code?.slice() || window.localStorage.getItem("edulintCode") || "");
   let [version, setVersion] = React.useState(null);
@@ -117,7 +115,7 @@ export function AnalysisBlock() {
     }
 
     fetchExplanations(setExplanations);
-    fetchVersions(setVersions, setVersion);
+    fetchVersions(setVersion);
   }, []);
 
   React.useEffect(() => {
@@ -135,10 +133,9 @@ export function AnalysisBlock() {
 
         <CodeMirrorWrapper view={view} editor={editor} problems={problems} />
 
-        <Buttons status={status} versions={versions} version={version}
+        <Buttons status={status}
           onLoad={(e) => loadFile(e, setCode, setProblems, setConfigErrors, setStatus, setActiveProblemsRange, navigate)}
           onDownload={() => downloadFile(code)}
-          onVersionChange={setVersion}
           onCheck={() => analyze(code, version, setProblems, setConfigErrors, setErrorCode, setActiveProblemsRange, setStatus)} />
 
         <FeedbackInfo />

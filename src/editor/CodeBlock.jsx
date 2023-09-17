@@ -150,7 +150,6 @@ export function useCodeMirrorCustom({ value, onChange, onProblemArrowClick, onCo
     value: value,
     theme: mode === "light" ? EDITOR_LIGHT_THEME : EDITOR_DARK_THEME,
     placeholder: "Enter your code here...",
-    className: "d-flex flex-fill",
     onChange: onChange,
     basicSetup: { autocompletion: false, foldGutter: false },
   });
@@ -172,5 +171,5 @@ export default function CodeMirrorWrapper({ view, editor, problems }) {
       setProblemArrows(view, problems);
   }, [view, problems]);
 
-  return <div id="editor-wrapper" ref={editor} className="d-flex flex-fill" />;
+  return <div id="editor-wrapper" ref={editor} />;
 }

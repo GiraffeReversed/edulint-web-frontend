@@ -61,6 +61,10 @@ html.dark .cm-gutters {
   height: calc(100% - 86px);
 }
 
+.cm-editor {
+  height: 100%;
+}
+
 .card-container {
   overflow-y: auto;
 }

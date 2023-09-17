@@ -152,6 +152,7 @@ export function useCodeMirrorCustom({ value, onChange, onProblemArrowClick, onCo
     placeholder: "Enter your code here...",
     className: "d-flex flex-fill",
     onChange: onChange,
+    basicSetup: { autocompletion: false, foldGutter: false },
   });
 
   React.useEffect(() => {

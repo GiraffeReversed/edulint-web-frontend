@@ -21,7 +21,7 @@ function handleOpinionClick(opinion, value, setOpinion, defectCode, sourceCodeHa
     setOpinion(null);
   else {
     setOpinion(value);
-    sendFeedback(defectCode, opinion, null, sourceCodeHash, line);
+    sendFeedback(defectCode, value, null, sourceCodeHash, line);
   }
 }
 

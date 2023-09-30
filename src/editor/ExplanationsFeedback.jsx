@@ -3,7 +3,7 @@ import React from "react";
 import { HandThumbsUp, HandThumbsDown, ChatLeftDots } from "react-bootstrap-icons";
 
 function sendFeedback(defectCode, opinion, comment, sourceCodeHash, line) {
-  fetch(`/explanations/feedback`, {
+  fetch(`/api/explanations/feedback`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

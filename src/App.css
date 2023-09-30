@@ -80,6 +80,10 @@ html.dark .cm-gutters {
   padding-left: 0.5rem;
 }
 
+.problem button.feedback {
+  border: 1px solid !important;
+}
+
 .problem svg {
   width: 20px;
   height: 20px;

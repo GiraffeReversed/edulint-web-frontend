@@ -74,8 +74,8 @@ function analyze(code, setProblems, setConfigErrors, setErrorCode, setActiveProb
     })
     .then(result => {
       let problems = result.problems.map(problem => {
-        if (problem.source == "flake8")
-          problem.line += 1;
+        if (problem.source === "flake8")
+          problem.line = Math.max(problem.line, 1);
         return problem;
       });
       setProblems(problems);

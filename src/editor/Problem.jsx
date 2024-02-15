@@ -49,7 +49,7 @@ export default function Problem({ path, line, enabled_by, source, code, text, ex
         <ButtonGroup className="d-flex">
           <Button variant="outline-warning" onClick={onProblemGotoClick}><Bullseye /></Button>
           <div className={"p-1 small w-100" + (Object.values(settings).some(v => v) ? " clickable" : "")} onClick={onTextClick}>
-            {line}: [{enabled_by}] {text}
+            {line}: {text}
           </div>
           <CollapseToggle eventKey={eventKey} hasExplanation={explanation !== undefined} onClick={accordionOnClick} />
         </ButtonGroup>

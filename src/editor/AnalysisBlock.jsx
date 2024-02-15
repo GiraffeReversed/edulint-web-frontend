@@ -73,7 +73,12 @@ function analyze(code, setProblems, setConfigErrors, setErrorCode, setActiveProb
       return response.json() // .json() for Objects vs text() for raw
     })
     .then(result => {
-      setProblems(result.problems);
+      let problems = result.problems.map(problem => {
+        if (problem.source == "flake8")
+          problem.line += 1;
+        return problem;
+      });
+      setProblems(problems);
       setConfigErrors(result.config_errors);
       setStatus("results");
     })

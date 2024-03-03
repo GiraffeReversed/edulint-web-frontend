@@ -60,7 +60,8 @@ function analyze(code, setProblems, setConfigErrors, setErrorCode, setActiveProb
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      code: code
+      code: code,
+      source_id: "edulint-web"
     })
   })
     .then(response => {

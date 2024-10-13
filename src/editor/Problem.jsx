@@ -19,6 +19,7 @@ function CollapseToggle({ eventKey, hasExplanation, onClick }) {
       className={"explCollapseButton" + (hasExplanation ? "" : " noExpl")}
       variant={hasExplanation ? "outline-secondary" : mode === "light" ? "outline-light" : "outline-dark"}
       onClick={onClick}
+      aria-label={(!hasExplanation ? "no" : isCurrentEventKey ? "hide" : "show") + " explanation"}
     >
       {isCurrentEventKey ? <ChevronUp /> : <ChevronDown />}
     </Button>
@@ -47,7 +48,13 @@ export default function Problem({ path, line, enabled_by, source, code, text, ex
     <Card className={(active ? "active " : "") + "problem my-2"}>
       <Card.Header className="p-0 border-bottom-0">
         <ButtonGroup className="d-flex">
-          <Button variant="outline-warning" onClick={onProblemGotoClick}><Bullseye /></Button>
+          <Button
+            variant="outline-warning"
+            aria-label="highlight line in editor"
+            onClick={onProblemGotoClick}
+          >
+            <Bullseye />
+          </Button>
           <div className={"p-1 small w-100" + (Object.values(settings).some(v => v) ? " clickable" : "")} onClick={onTextClick}>
             {line}: [{enabled_by}] {text}
           </div>

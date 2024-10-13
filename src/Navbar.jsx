@@ -19,8 +19,8 @@ export default function Navbar({ mode, onSettingsClick }) {
           <NavLink className="nav-link" to={`about`}>About</NavLink>
         </Nav>
         <Nav>
-          <Nav.Link onClick={() => toggleDarkmode(current, setMode)}>{modeSymbol}</Nav.Link>
-          <Nav.Link><GearFill onClick={onSettingsClick} /></Nav.Link>
+          <Nav.Link aria-label="toggle light and dark mode" onClick={() => toggleDarkmode(current, setMode)}>{modeSymbol}</Nav.Link>
+          <Nav.Link aria-label="settings" k><GearFill onClick={onSettingsClick} /></Nav.Link>
         </Nav>
       </Container>
     </NB >

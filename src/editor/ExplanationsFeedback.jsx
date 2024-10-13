@@ -41,10 +41,11 @@ export function ExplanationFeedback({ defectCode, sourceCodeHash, line }) {
         <InputGroup.Text id="inputGroup-sizing-sm" className="flex-fill">Was this helpful?</InputGroup.Text>
         {
           [
-            { value: "good", variant: "success", label: <HandThumbsUp /> },
-            { value: "bad", variant: "danger", label: <HandThumbsDown /> }
+            { value: "good", variant: "success", label: <HandThumbsUp />, ariaLabel: "yes" },
+            { value: "bad", variant: "danger", label: <HandThumbsDown />, ariaLabel: "no" }
           ].map((opinion_data, idx) => (
             <ToggleButton
+              aria-label={opinion_data.ariaLabel}
               className="d-flex align-items-center justify-content-center feedback flex-fill"
               key={idx}
               type="radio"
@@ -57,6 +58,7 @@ export function ExplanationFeedback({ defectCode, sourceCodeHash, line }) {
         }
 
         <Button
+          aria-label="leave a comment"
           variant="secondary-outline"
           className="feedback flex-fill"
           onClick={() => setCommentBlockOpen(!commentBlockOpen)}
@@ -76,6 +78,7 @@ export function ExplanationFeedback({ defectCode, sourceCodeHash, line }) {
               onChange={(e) => setComment(e.target.value)}
             />
             <Button
+              aria-label="submit"
               variant="primary"
               onClick={() => handleCommentSubmitClick(comment, defectCode, sourceCodeHash, line)}
             >Submit</Button>

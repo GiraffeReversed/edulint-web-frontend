@@ -75,7 +75,7 @@ export default function Problem({ path, line, enabled_by, source, code, text, ex
           {(why || examples) && <ExplanationFeedback defectCode={code} sourceCodeHash={sourceCodeHash} line={line} />}
           <p className="text-muted tiny-text mb-0">
             <span className="fw-bold">Debug</span> {source} {line} {code}
-            <span className="text-break"> {sourceCodeHash}</span>
+            <span aria-label="program hash" className="text-break"> {sourceCodeHash}</span>
           </p>
         </Card.Body>
       </Accordion.Collapse>

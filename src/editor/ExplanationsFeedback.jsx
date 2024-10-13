@@ -41,12 +41,12 @@ export function ExplanationFeedback({ defectCode, sourceCodeHash, line }) {
         <InputGroup.Text id="inputGroup-sizing-sm" className="flex-fill">Was this helpful?</InputGroup.Text>
         {
           [
-            { value: "good", variant: "success", label: <HandThumbsUp />, ariaLabel: "yes" },
-            { value: "bad", variant: "danger", label: <HandThumbsDown />, ariaLabel: "no" }
+            { value: "good", variant: "success", label: <HandThumbsUp />, ariaLabel: "was helpful" },
+            { value: "bad", variant: "danger", label: <HandThumbsDown />, ariaLabel: "was not helpful" }
           ].map((opinion_data, idx) => (
             <ToggleButton
               aria-label={opinion_data.ariaLabel}
-              name={opinion_data.ariaLabel}
+              id={`code_${defectCode}_line_${line}_feedback_${opinion_data.value}`}
               className="d-flex align-items-center justify-content-center feedback flex-fill"
               key={idx}
               type="radio"

@@ -46,6 +46,7 @@ export function ExplanationFeedback({ defectCode, sourceCodeHash, line }) {
           ].map((opinion_data, idx) => (
             <ToggleButton
               aria-label={opinion_data.ariaLabel}
+              name={opinion_data.ariaLabel}
               className="d-flex align-items-center justify-content-center feedback flex-fill"
               key={idx}
               type="radio"

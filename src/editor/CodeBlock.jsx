@@ -23,6 +23,8 @@ const problemArrowEffect = StateEffect.define({
   map: (val, mapping) => ({ pos: mapping.mapPos(val.pos) })
 })
 
+const removeAllProblemArrowsEffect = StateEffect.define();
+
 const problemArrowState = StateField.define({
   create() { return RangeSet.empty; },
 
@@ -30,7 +32,13 @@ const problemArrowState = StateField.define({
     set = set.map(transaction.changes);
 
     let poss = [];
+
+    let removeAll = false;
     transaction.effects.forEach((e, i) => {
+      if (e.is(removeAllProblemArrowsEffect)) {
+        poss = [];
+        removeAll = true;
+      }
       if (e.is(problemArrowEffect)) {
         let v = new ProblemArrow(i).range(e.value.pos);
         poss.push(v);
@@ -39,6 +47,8 @@ const problemArrowState = StateField.define({
 
     if (poss.length > 0)
       return RangeSet.of(poss);
+    if (removeAll)
+      return RangeSet.empty;
 
     return set;
   }
@@ -167,8 +177,10 @@ export function useCodeMirrorCustom({ value, onChange, onProblemArrowClick, onCo
 export default function CodeMirrorWrapper({ view, editor, problems }) {
 
   React.useEffect(() => {
-    if (view)
+    if (view) {
+      view.dispatch({ effects: removeAllProblemArrowsEffect.of() })
       setProblemArrows(view, problems);
+    }
   }, [view, problems]);
 
   return <div id="editor-wrapper" ref={editor} />;

@@ -3,9 +3,12 @@ import DescContainer from "../utils/DescContainer";
 import { Link } from "react-router-dom";
 import CtrlShortcut from "../utils/CtrlShortcut";
 
+import WhatIsEduLint from "./WhatIsEduLint";
+
 export default function FAQ() {
   return (
     <DescContainer id="faq">
+      <WhatIsEduLint />
       <section id="download-warning">
         <DescCard>
           <h5>Why does the browser warn me when I download my code?</h5>

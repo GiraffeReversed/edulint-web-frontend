@@ -3,9 +3,12 @@ import DescContainer from "../utils/DescContainer";
 import { SecondaryLink as A } from "../utils/SecondaryLink";
 import { Github } from "react-bootstrap-icons";
 
+import WhatIsEduLint from "./WhatIsEduLint";
+
 export default function About() {
   return (
     <DescContainer id="about">
+      <WhatIsEduLint />
       <DescCard>
         <h5>About the page</h5>
         <p>

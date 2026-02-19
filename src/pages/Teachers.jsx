@@ -3,22 +3,20 @@ import DescContainer from "../utils/DescContainer";
 import { SecondaryLink as A } from "../utils/SecondaryLink";
 import { Link } from "react-router-dom";
 
+import WhatIsEduLint from "./WhatIsEduLint";
+
 export default function Teachers() {
   return (
     <DescContainer id="teachers">
-      <section id="what-is-edulint">
-        <h5>What is EduLint?</h5>
-        <p>
-          EduLint provides basic code quality feedback to novice programmers. If you want, you can configure it to
-          provide whatever feedback you think is relevant. It uses static analysis.
-        </p>
-      </section>
+      <WhatIsEduLint />
       <section id="user-guides">
-        <h5>How do I start using EduLint?</h5>
-        <p>
-          You can read the <A href="https://edulint.readthedocs.io/en/latest/user_guides.html">user guides</A> in
-          EduLint's documentation.
-        </p>
+        <DescCard>
+          <h5>How do I start using EduLint?</h5>
+          <p>
+            You can read the <A href="https://edulint.readthedocs.io/en/latest/user_guides.html">user guides</A> in
+            EduLint's documentation.
+          </p>
+        </DescCard>
       </section>
       <section id="teachers-configuration">
         <DescCard>
